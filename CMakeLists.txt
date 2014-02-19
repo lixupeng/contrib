@@ -366,7 +366,6 @@ set( BUILD_SHARED_LIBRARIES Off CACHE BOOL "Builds all contrib libraries as shar
 if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "SEQAN")
   OPENMS_CLEAN_LIB("SEQAN")
   OPENMS_CONTRIB_BUILD_SEQAN()
-  OPENMS_COPY_LIBS("SEQAN")
 endif()
 
 ##################################################

@@ -48,22 +48,10 @@ MACRO( OPENMS_CONTRIB_BUILD_SEQAN )
       set(_SEQAN_INSTALL_TARGET "install")
   endif()
 
-  message(STATUS "Building seqan doc  .. ")
-  execute_process(COMMAND ${CMAKE_COMMAND} --build ${_SEQAN_NATIVE_BUILD_DIR} --target docs --config Release
-                  WORKING_DIRECTORY ${_SEQAN_NATIVE_BUILD_DIR}
-                  OUTPUT_VARIABLE _SEQAN_BUILD_DOC_OUT
-                  ERROR_VARIABLE _SEQAN_BUILD_DOC_ERR
-                  RESULT_VARIABLE _SEQAN_BUILD_DOC_SUCCESS)
-
-  if (NOT _SEQAN_BUILD_DOC_SUCCESS EQUAL 0)
-    message(FATAL_ERROR "Building seqan doc .. failed")
-  else()
-    message(STATUS "Building seqan doc .. done")
-  endif()
-
-  # output to logfile
-  file(APPEND ${LOGFILE} ${_SEQAN_BUILD_DOC_OUT})
-  file(APPEND ${LOGFILE} ${_SEQAN_BUILD_DOC_ERR})
+  # fake the doc target by simply creating the doc/html folder
+  set(_SEQAN_EXPECTED_DOC_DIR "${_SEQAN_BUILD_DIR}/docs/html")
+  file(TO_NATIVE_PATH "${_SEQAN_EXPECTED_DOC_DIR}" _SEQAN_NATIVE_EXPECTED_DOC_DIR)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${_SEQAN_NATIVE_EXPECTED_DOC_DIR})
 
   message(STATUS "Installing seqan headers .. ")
   execute_process(COMMAND ${CMAKE_COMMAND} --build ${_SEQAN_NATIVE_BUILD_DIR} --target ${_SEQAN_INSTALL_TARGET} --config Release
