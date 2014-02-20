@@ -149,9 +149,9 @@ set(ARCHIVE_LIBSVM libsvm-3.12.tar.gz)
 set(ARCHIVE_LIBSVM_TAR  libsvm-3.12.tar)
 set(ARCHIVE_LIBSVM_SHA1 "6ee77eb3d89af07fe48058dba0dcc24c85020b85")
 
-set(ARCHIVE_SEQAN seqan-src-1.4.1.tar.gz)
-set(ARCHIVE_SEQAN_TAR  seqan-src-1.4.1.tar)
-set(ARCHIVE_SEQAN_SHA1 "3d4b15421e5375ac55555cd9c6546c343c324813")
+set(ARCHIVE_SEQAN seqan-mini-1.4.1.tar.gz)
+set(ARCHIVE_SEQAN_TAR  seqan-mini-1.4.1.tar)
+set(ARCHIVE_SEQAN_SHA1 "1aecb390311a12330c5a1c8d91cb9ac4cd8e1718")
 
 set(ARCHIVE_GLPK glpk-4.46.tar.gz)
 set(ARCHIVE_GLPK_TAR  glpk-4.46.tar)
