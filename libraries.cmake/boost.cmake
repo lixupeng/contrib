@@ -34,7 +34,7 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
 
       file(APPEND  ${LOGFILE} ${BOOST_BOOTSTRAP_OUT})
       
-      if (NOT BOOST_BOOTSTRAP_SUCCESS)
+      if (NOT BOOST_BOOTSTRAP_SUCCESS EQUAL 0)
         message(STATUS "Bootstrapping Boost libraries (bootstrap.bat) ... failed")
         ### on some command lines bootstrapping fail (e.g. the toolset is too new) or will give:
         # "Building Boost.Build engine. The input line is too long."
