@@ -63,6 +63,24 @@
 ## NOTE: remove "exec_program" calls and substitute with exec_process (see http://www.cmake.org/cmake/help/cmake2.6docs.html#command:execute_process)
 ##       - however: exec_process seems to handle our arguments incorreclty (at least on Windows). Check functionality before you commit!
 
+# Determine what to build (all or single library)
+set( BUILD_TYPE LIST CACHE STRING "Can be used to restrict building to a single library: ALL,SEQAN,LIBSVM,XERCESC,BOOST,GSL,COINOR,BZIP2,ZLIB,GLPK")
+set( VALID_BUILD_TYPES "ALL" "SEQAN" "LIBSVM" "XERCESC" "BOOST" "GSL" "COINOR" "BZIP2" "ZLIB" "GLPK" "EIGEN" "WILDMAGIC")
+# check build type
+if (BUILD_TYPE STREQUAL "HELP" OR BUILD_TYPE STREQUAL "LIST")
+  message(STATUS "===========================================================================")
+  message(STATUS " OpenMS contrib (dependency packages) installation.")
+  message(STATUS " This program will allow you to compile and install all of the OpenMS")
+  message(STATUS " dependencies. Select the package you wish to install using the the command")
+  message(STATUS " -DBUILD_TYPE= or install all of them with -DBUILD_TYPE=ALL.")
+  message(STATUS "===========================================================================")
+  message(STATUS "Valid BUILD_TYPEs are:")
+  foreach( BT ${VALID_BUILD_TYPES} )
+    message(STATUS " * ${BT}")
+  endforeach( BT VALID_BUILD_TYPES )
+  return(0)
+endif()
+
 PROJECT("OpenMS_CONTRIB")
 
 # Heart of the BUILD system : only edit when you know what you are doing (we don't)
@@ -330,11 +348,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-##determine what to build (all or single library)
-set( BUILD_TYPE ALL CACHE STRING "Can be used to restrict building to a single library: ALL,SEQAN,LIBSVM,XERCESC,BOOST,GSL,COINOR,BZIP2,ZLIB,GLPK")
-
-set( VALID_BUILD_TYPES "ALL" "SEQAN" "LIBSVM" "XERCESC" "BOOST" "GSL" "COINOR" "BZIP2" "ZLIB" "GLPK" "EIGEN" "WILDMAGIC")
-# check build type
 list(FIND VALID_BUILD_TYPES ${BUILD_TYPE} list_pos)
 if( ${list_pos} EQUAL -1 )
 	message(STATUS "The BUILD_TYPE ${BUILD_TYPE} is invalid")
