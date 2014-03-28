@@ -15,3 +15,16 @@ http://www.openms.de for installation instructions.
 Please note that an internet connection is required to
 build the contrib since the actual source packages are
 only downloaded when build.
+
+Build
+============
+
+To see all available build types, execute 
+
+```$ cmake -DBUILD_TYPE=LIST .```
+
+Using the ```-DBUILD_TYPE``` switch on the commandline, you can customize which
+external libraries should be built (depending on your system, you might already
+have some of them installed and may not want to re-install them). 
+CMake will then download the requested libraries and compile them for you.
+
