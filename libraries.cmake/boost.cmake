@@ -28,18 +28,18 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
       execute_process(COMMAND bootstrap.bat
                       WORKING_DIRECTORY ${BOOST_DIR}
                       OUTPUT_VARIABLE BOOST_BOOTSTRAP_OUT
-                      ERROR_VARIABLE BOOST_BOOTSTRAP_OUT
+                      ERROR_VARIABLE BOOST_BOOTSTRAP_OUT   # use same variable for stderr as stdout to merge streams
                       RESULT_VARIABLE BOOST_BOOTSTRAP_SUCCESS)
       
-
       file(APPEND  ${LOGFILE} ${BOOST_BOOTSTRAP_OUT})
       
-      if (NOT BOOST_BOOTSTRAP_SUCCESS EQUAL 0)
-        message(STATUS "Bootstrapping Boost libraries (bootstrap.bat) ... failed")
+	  ## check for failed bootstrapping. Even if failing the return code can be 0 (indicating success), so we additionally check the output 
+      if ((NOT BOOST_BOOTSTRAP_SUCCESS EQUAL 0) OR (BOOST_BOOTSTRAP_OUT MATCHES "[fF]ailed"))
+        message(STATUS "Bootstrapping Boost libraries (bootstrap.bat) ... failed\nOutput was ${BOOST_BOOTSTRAP_OUT}\n")
         ### on some command lines bootstrapping fail (e.g. the toolset is too new) or will give:
         # "Building Boost.Build engine. The input line is too long."
         ## ,thus we provide a backup bjam.exe(32bit), which hopefully works on all target systems.
-        message(STATUS " .. trying fallback with backup bjam.exe ...")
+        message(STATUS " ... trying fallback with backup bjam.exe ...")
         configure_file("${PROJECT_SOURCE_DIR}/patches/boost/bjam.exe" "${BOOST_DIR}/bjam.exe" COPYONLY)
       else()
         message(STATUS "Bootstrapping Boost libraries (bootstrap.bat) ... done")
