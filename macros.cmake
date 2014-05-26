@@ -2,6 +2,26 @@
 ###    some useful MACROS											 ###
 ##################################################
 
+## validates the archive for the given library
+## @param libname The libary that should be validate
+macro(validate_archive libname)
+  set(_archive_folder "${PROJECT_BINARY_DIR}/archives")
+  set(_target_file "${_archive_folder}/${ARCHIVE_${libname}}")
+  set(_target_sha1 ${ARCHIVE_${libname}_SHA1})
+
+  message(STATUS "Validating archive for ${libname} .. ")
+
+  file(SHA1 ${_target_file} _downloaded_sha1 )
+  if(NOT "${_downloaded_sha1}" STREQUAL "${_target_sha1}")
+    file(REMOVE ${_target_file})
+    message(STATUS "Validating archive for ${libname} .. sha1 mismatch (expected ${_target_sha1} got ${_downloaded_sha1})")
+    message(FATAL_ERROR "Please try rebuilding the contrib. If this fails to, contact the OpenMS support.")
+  else()
+    message(STATUS "Validating archive for ${libname} .. done")
+  endif()
+endmacro()
+
+
 ## downloads the archive for the given library
 ## @param libname The libary that should be downloaded
 macro(download_contrib_archive libname)
@@ -24,18 +44,13 @@ macro(download_contrib_archive libname)
   if(NOT EXISTS ${_target_file})
     # download
     file(DOWNLOAD ${_full_url} "${_target_file}")
-
-    # validate sha1 hash
-    file(SHA1 ${_target_file} _downloaded_sha1 )
-    if(NOT "${_downloaded_sha1}" STREQUAL "${_target_sha1}")
-      file(REMOVE ${_target_file})
-      message(FATAL_ERROR "Downloading ${libname} .. sha1 mismatch (expected ${_target_sha1} got ${_downloaded_sha1})")
-    else()
-      message(STATUS "Downloading ${libname} .. done")
-    endif()
+    message(STATUS "Downloading ${libname} .. done")
   else()
     message(STATUS "Downloading ${libname} .. skipped (already downloaded)")
   endif(NOT EXISTS ${_target_file})
+
+  # validate the archive before using it
+  validate_archive(${libname})
 endmacro()
 
 
