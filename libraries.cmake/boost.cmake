@@ -20,7 +20,7 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
   
   if(MSVC) ## build boost library for windows
     
-    set(TOOLSET "toolset=msvc-${CONTRIB_MSVC_VERSION}.0")
+    set(TOOLSET "toolset=msvc")
     
     if (NOT QUICKBUILD)
       ## not a Visual Studio project .. just build by hand
