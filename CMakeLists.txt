@@ -47,18 +47,18 @@
 ## - usually each package contains a build-system for Windows (solution [*.sln] files or NMake files [Makefile.win] ) and Linux(Makefiles) already provided by
 ##   the original developer. In some cases you need to rely on third party packages, e.g. the gsl-win project, which provides solution files.
 ##   HOWEVER, for Windows they are usually not complete (e.g. missing 64bit targets, or even whole solution files
-##   for a certain Visual Studio version (we support 8 and 9 and 10).
-##	 Case a: 64bit targets are missing in Solution file
-##	 	Solution: open the VS solution and add x64 solution platform using the Configuration Manager
+##   for a certain Visual Studio version (we support 8 and above).
+##   Case a: 64bit targets are missing in Solution file
+##    Solution: open the VS solution and add x64 solution platform using the Configuration Manager
 ##                (you can build the x64 target by adding "|64" to the Build option of devenv.exe - see examples below)
 ##   Case b: Solution files for a certain Visual Studio Version (usually 9) are missing.
 ##      Solution: copy the VS8 solution (including vcproj files) - usually this is a separate folder
-##				  using the VS9 IDE, open the copied VS8 solution (a converter tool should automatically open) and follow the steps.
-##				  (optionally rename the converted solution e.g. from xerces_vs8.sln to xerces_vs9.sln)
+##          using the VS9 IDE, open the copied VS8 solution (a converter tool should automatically open) and follow the steps.
+##          (optionally rename the converted solution e.g. from xerces_vs8.sln to xerces_vs9.sln)
 ## Remember: in the end, you need three solution files (VS8 & VS9 & VS10), each supporting 32 and 64 bit platforms.
 ##
 ## Making sure linking is consistent:
-##		- when combining external libs with our own, Microsoft's linker can only handle one type of reference to the C(++) standard libs, which is either
+##    - when combining external libs with our own, Microsoft's linker can only handle one type of reference to the C(++) standard libs, which is either
 ##      dynamic (/MD(d)) or static (/MT(d)), but not both (you will get multiply defined symbols and tons of linker errors).
 ##      Note that this does not mean you cannot mix static and dynamic external libraries (you can), it rather means you cannot mix static and dynamic CRT's.
 ##      Thus, make sure to check every new solution file you add is linking to the *dynamic* CRT with /MD(d).
@@ -73,7 +73,7 @@
 ## Boost:  NA, Boost uses its in-house Boost-Jam which supports everything we need
 ## SEQAN:  headers only library, no compilation necessary for OpenMS
 ## LibSVM: comes with a Makefile.win, but libsvm needed some serious tweaking to support debug mode and to build a lib (instead of object files only)
-## XERCES-C: they offer a VS version on their website (http://xerces.apache.org/xerces-c/), usually not for bleeding egde release though - bad luck for us.
+## XERCES-C: they offer a VS version on their website (http://xerces.apache.org/xerces-c/), usually not for bleeding edge release though - bad luck for us.
 ## GSL:    get the src package from http://gnuwin32.sourceforge.net/packages/gsl.htm,
 ##         This should still contain the Linux Makefiles.
 ## GLPK:   download from http://ftp.gnu.org/gnu/glpk/glpk-4.46.tar.gz
@@ -95,7 +95,7 @@
 
 
 ## NOTE: remove "exec_program" calls and substitute with exec_process (see http://www.cmake.org/cmake/help/cmake2.6docs.html#command:execute_process)
-##       - however: exec_process seems to handle our arguments incorreclty (at least on Windows). Check functionality before you commit!
+##       - however: exec_process seems to handle our arguments incorrectly (at least on Windows). Check functionality before you commit!
 
 # Determine what to build (all or single library)
 set( BUILD_TYPE LIST CACHE STRING "Can be used to restrict building to a single library: ALL,SEQAN,LIBSVM,XERCESC,BOOST,GSL,COINOR,BZIP2,ZLIB,GLPK")
@@ -168,13 +168,13 @@ set(WILDMAGIC_DIR ${CONTRIB_BIN_SOURCE_DIR}/WildMagic5)
 ##     https://sourceforge.net/projects/open-ms/files/contrib/
 ## and provide the necessary information below
 ##  ARCHIVE_<LIBNAME> the name of the archive as it was uploaded
-##  ARCHIVE_<LIBNAME>_TAR the namve of the tar in the tar.gz
+##  ARCHIVE_<LIBNAME>_TAR the name of the tar in the tar.gz
 ##  ARCHIVE_<LIBNAME>_SHA1 the sha1 of the file uploaded to sourceforge
 ## e.g.
 ##  set(ARCHIVE_ZLIB zlib.tar.gz)
 ##  set(ARCHIVE_ZLIB_TAR zlib.tar)
 ##  set(ARCHIVE_ZLIB_SHA1 "8e8b93fa5eb80df1afe5422309dca42964562d7e")
-## NOTE: for local devoloping you can simply place the *.tar.gz in the binary
+## NOTE: for local development you can simply place the *.tar.gz in the binary
 ##       directory to prevent the download and sha1 verification
 
 set(ARCHIVE_BZIP2 bzip2-1.0.5.tar.gz)
@@ -221,7 +221,7 @@ set(ARCHIVE_WILDMAGIC WildMagic5.tar.gz)
 set(ARCHIVE_WILDMAGIC_TAR  WildMagic5.tar)
 set(ARCHIVE_WILDMAGIC_SHA1 "e30b6f7f955c640dadfea09385a0a0ddec5b2997")
 
-## necessary for cleanup .. change if install process of library changes
+## necessary for clean up .. change if install process of library changes
 set(INCLUDE_DIR_BOOST ${CONTRIB_BIN_INCLUDE_DIR}/boost)
 set(INCLUDE_DIR_XERCES ${CONTRIB_BIN_INCLUDE_DIR}/xercesc)
 set(INCLUDE_DIR_GSL ${CONTRIB_BIN_INCLUDE_DIR}/gsl)
@@ -238,69 +238,69 @@ set(INCLUDE_FILES_ZLIB ${CONTRIB_BIN_INCLUDE_DIR}/zlib.h)
 
 ## address model of contrib
 if (CMAKE_SIZEOF_VOID_P MATCHES "8")
-	set(CONTRIB_ADDRESSMODEL 64 CACHE INTERNAL "Architecture-bits")
+  set(CONTRIB_ADDRESSMODEL 64 CACHE INTERNAL "Architecture-bits")
 else()
-	set(CONTRIB_ADDRESSMODEL 32 CACHE INTERNAL "Architecture-bits")
+  set(CONTRIB_ADDRESSMODEL 32 CACHE INTERNAL "Architecture-bits")
 endif()
 message(STATUS "ADDRESSMODEL IS: ${CONTRIB_ADDRESSMODEL} bit")
 if (NOT CONTRIB_ADDRESSMODEL MATCHES "32|64")
-	Message(FATAL_ERROR "CONTRIB_ADDRESSMODEL is neither 32 nor 64! Please correct this!")
+  Message(FATAL_ERROR "CONTRIB_ADDRESSMODEL is neither 32 nor 64! Please correct this!")
 endif()
 
 # logfile
 set(LOGFILE "${PROJECT_BINARY_DIR}/contrib_build.log")
 
 if (MSVC)
-	## guess MSVC Version (we need this in order to correctly guess the names of the VS solution targets.
-	set(CONTRIB_MSVC_VERSION "" CACHE STRING "Microsoft Visual Studio Version used. Valid values: 8, 9 or 10 (7 is NOT supported)")
-	if (CMAKE_GENERATOR MATCHES ".*Visual Studio 8 2005.*")
-		set(CONTRIB_MSVC_VERSION "8")
-	elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 9 2008.*")
-		set(CONTRIB_MSVC_VERSION "9")
-	elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 10.*")
-		set(CONTRIB_MSVC_VERSION "10")
-	elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 11.*")
-		set(CONTRIB_MSVC_VERSION "11")
-	elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 12.*")
-		set(CONTRIB_MSVC_VERSION "12")
-	else()
-		message(FATAL_ERROR "Please use 'Visual Studio 8 2005 [Win64]' or 'Visual Studio 9 2008 [Win64]' or 'Visual Studio 10 [Win64]' or 'Visual Studio 11 [Win64]' or 'Visual Studio 12 [Win64]'as Generator - identical to the one you plan to use for OpenMS!")
-	endif()
-	## parameter validity check
-	message(STATUS "MSVC Version is: ${CONTRIB_MSVC_VERSION}")
+  ## guess MSVC Version (we need this in order to correctly guess the names of the VS solution targets.
+  if (CMAKE_GENERATOR MATCHES ".*Visual Studio 8 2005.*")
+    set(TMP_MSVC_VERSION "8")
+  elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 9 2008.*")
+    set(TMP_MSVC_VERSION "9")
+  elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 10.*")
+    set(TMP_MSVC_VERSION "10")
+  elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 11.*")
+    set(TMP_MSVC_VERSION "11")
+  elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 12.*")
+    set(TMP_MSVC_VERSION "12")
+  else()
+    message(FATAL_ERROR "Please use 'Visual Studio 8 2005 [Win64]' or 'Visual Studio 9 2008 [Win64]' or 'Visual Studio 10 [Win64]' or 'Visual Studio 11 [Win64]' or 'Visual Studio 12 [Win64]'as Generator - identical to the one you plan to use for OpenMS!")
+  endif()
+  set(CONTRIB_MSVC_VERSION ${TMP_MSVC_VERSION} CACHE INTERNAL "Microsoft Visual Studio Version used. Valid values: 8 and above")
+  ## parameter validity check
+  message(STATUS "MSVC Version is: ${CONTRIB_MSVC_VERSION}")
 
-	## some settings for Building the libs
-	if (CONTRIB_ADDRESSMODEL MATCHES 32)
-		set(BOOST_ARG "")
-		set(WIN_PLATFORM_ARG "Win32")
-	else()
-		set(BOOST_ARG "address-model=64")
-		set(WIN_PLATFORM_ARG "x64")
-	endif()
+  ## some settings for Building the libs
+  if (CONTRIB_ADDRESSMODEL MATCHES 32)
+    set(BOOST_ARG "")
+    set(WIN_PLATFORM_ARG "Win32")
+  else()
+    set(BOOST_ARG "address-model=64")
+    set(WIN_PLATFORM_ARG "x64")
+  endif()
 
-	find_program(PROGRAM_ZIP "7z.exe" PATHS "C:/Program Files/7-Zip" "C:/Programme/7-Zip")
-	if (NOT PROGRAM_ZIP)
-		message(FATAL_ERROR "Cannot find '7z.exe' on your system. Please install 7-zip and add the directory to your PATH environment variable!")
-	endif()
+  find_program(PROGRAM_ZIP "7z.exe" PATHS "C:/Program Files/7-Zip" "C:/Programme/7-Zip")
+  if (NOT PROGRAM_ZIP)
+    message(FATAL_ERROR "Cannot find '7z.exe' on your system. Please install 7-zip and add the directory to your PATH environment variable!")
+  endif()
 
-	## http://gnuwin32.sourceforge.net/packages/patch.htm
-	find_program(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin")
-	if (NOT PROGRAM_PATCH)
-		message(FATAL_ERROR "Cannot find 'patch.exe' on your system. Please install gnuwin32-patch and add the directory to your PATH environment variable!")
-	endif()
+  ## http://gnuwin32.sourceforge.net/packages/patch.htm
+  find_program(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin")
+  if (NOT PROGRAM_PATCH)
+    message(FATAL_ERROR "Cannot find 'patch.exe' on your system. Please install gnuwin32-patch and add the directory to your PATH environment variable!")
+  endif()
 
 else() ## linux/Mingw/macos
   # tar
-	find_program(PROGRAM_ZIP "tar")
-	if (NOT PROGRAM_ZIP)
-		message(FATAL_ERROR "Cannot find 'tar' on your system. Please install the tar program and add the directory to your PATH environment variable!")
-	endif()
+  find_program(PROGRAM_ZIP "tar")
+  if (NOT PROGRAM_ZIP)
+    message(FATAL_ERROR "Cannot find 'tar' on your system. Please install the tar program and add the directory to your PATH environment variable!")
+  endif()
 
   # patch
-	find_program(PROGRAM_PATCH "patch")
-	if (NOT PROGRAM_PATCH)
-		message(FATAL_ERROR "Cannot find 'patch' on your system. Please install patch and add the directory to your PATH environment variable!")
-	endif()
+  find_program(PROGRAM_PATCH "patch")
+  if (NOT PROGRAM_PATCH)
+    message(FATAL_ERROR "Cannot find 'patch' on your system. Please install patch and add the directory to your PATH environment variable!")
+  endif()
 
   ## following progs are required for xerces-c, since we build from svn and not a release
   # autoconf
@@ -315,7 +315,7 @@ else() ## linux/Mingw/macos
     message(FATAL_ERROR "Cannot find 'automake' on your system. Please install automake and add the directory to your PATH environment variable!")
   endif()
 
-	# libtoolize
+  # libtoolize
   find_program(PROGRAM_LIBTOOLIZE NAMES "libtoolize" "glibtoolize")
   if (NOT PROGRAM_LIBTOOLIZE)
     message(FATAL_ERROR "Cannot find '(g)libtoolize' on your system. Please install libtoolize and add the directory to your PATH environment variable!")
@@ -369,14 +369,14 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   message(STATUS "Using custom OS X architecture flags for CXX compiler: \"${CXX_OSX_FLAGS}\"")
   file(APPEND ${LOGFILE} "Using custom OS X architecture flags for CXX compiler: \"${CXX_OSX_FLAGS}\"\n\r")
 
-	# check ich c++ is used; if, switch to g++ for some strange
-	# incompatibility reasons
-	if (${CMAKE_CXX_COMPILER} MATCHES "/c[+][+]")
-		set(MACOSX_COMPILER ${CMAKE_CXX_COMPILER})
-		string(REPLACE "c++" "g++" MACOSX_FIXED_COMPILER ${MACOSX_COMPILER})
-		message(WARNING "Using '${CMAKE_CXX_COMPILER}' may cause problems, automatically replacing by '${MACOSX_FIXED_COMPILER}'!")
-		set(CMAKE_CXX_COMPILER ${MACOSX_FIXED_COMPILER} CACHE INTERNAL "Forcing '${CMAKE_CXX_COMPILER}' compiler (replacing '${CMAKE_CXX_COMPILER}' compiler)." FORCE)
-	endif()
+  # check ich c++ is used; if, switch to g++ for some strange
+  # incompatibility reasons
+  if (${CMAKE_CXX_COMPILER} MATCHES "/c[+][+]")
+    set(MACOSX_COMPILER ${CMAKE_CXX_COMPILER})
+    string(REPLACE "c++" "g++" MACOSX_FIXED_COMPILER ${MACOSX_COMPILER})
+    message(WARNING "Using '${CMAKE_CXX_COMPILER}' may cause problems, automatically replacing by '${MACOSX_FIXED_COMPILER}'!")
+    set(CMAKE_CXX_COMPILER ${MACOSX_FIXED_COMPILER} CACHE INTERNAL "Forcing '${CMAKE_CXX_COMPILER}' compiler (replacing '${CMAKE_CXX_COMPILER}' compiler)." FORCE)
+  endif()
 
   # force cmake > 2.8.1 to avoid bugs with OSX_DEPLOYMENT_TARGET
   cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
@@ -384,14 +384,14 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 list(FIND VALID_BUILD_TYPES ${BUILD_TYPE} list_pos)
 if( ${list_pos} EQUAL -1 )
-	message(STATUS "The BUILD_TYPE ${BUILD_TYPE} is invalid")
-	message(STATUS "Valid BUILD_TYPEs are:")
-	foreach( BT ${VALID_BUILD_TYPES} )
-		message(STATUS " * ${BT}")
-	endforeach( BT VALID_BUILD_TYPES )
-	message(FATAL_ERROR "Aborting contrib build!")
+  message(STATUS "The BUILD_TYPE ${BUILD_TYPE} is invalid")
+  message(STATUS "Valid BUILD_TYPEs are:")
+  foreach( BT ${VALID_BUILD_TYPES} )
+    message(STATUS " * ${BT}")
+  endforeach( BT VALID_BUILD_TYPES )
+  message(FATAL_ERROR "Aborting contrib build!")
 else( ${list_pos} EQUAL -1 )
-	message(STATUS "BUILD_TYPE: ${BUILD_TYPE} (one of: ${VALID_BUILD_TYPES})")
+  message(STATUS "BUILD_TYPE: ${BUILD_TYPE} (one of: ${VALID_BUILD_TYPES})")
 endif( ${list_pos} EQUAL -1 )
 
 set( FORCE_REBUILD OFF CACHE BOOL "All installation and build traces of the contrib packages will be removed before building.")
