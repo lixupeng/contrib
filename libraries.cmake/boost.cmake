@@ -20,7 +20,8 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
   
   if(MSVC) ## build boost library for windows
     
-    set(TOOLSET "toolset=msvc")
+    ## omitting the version (i.e. 'toolset=msvc'), causes Boost to use the latest(!) VS it can find the system -- irrespective of the current env (and its cl.exe)
+    set(TOOLSET "toolset=msvc-${CONTRIB_MSVC_VERSION}.0") 
     
     if (NOT QUICKBUILD)
       ## not a Visual Studio project .. just build by hand
@@ -33,7 +34,7 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
       
       file(APPEND  ${LOGFILE} ${BOOST_BOOTSTRAP_OUT})
       
-	  ## check for failed bootstrapping. Even if failing the return code can be 0 (indicating success), so we additionally check the output 
+      ## check for failed bootstrapping. Even if failing the return code can be 0 (indicating success), so we additionally check the output 
       if ((NOT BOOST_BOOTSTRAP_SUCCESS EQUAL 0) OR (BOOST_BOOTSTRAP_OUT MATCHES "[fF]ailed"))
         message(STATUS "Bootstrapping Boost libraries (bootstrap.bat) ... failed\nOutput was ${BOOST_BOOTSTRAP_OUT}\n")
         ### on some command lines bootstrapping fail (e.g. the toolset is too new) or will give:
