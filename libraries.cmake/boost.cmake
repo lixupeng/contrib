@@ -87,6 +87,21 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
  
   else() ## LINUX/MAC
 
+    # we need to know the compiler version for proper formating boost user-config.jam
+    determine_compiler_version()
+
+    # use proper toolchain
+    if(APPLE)
+      set(_boost_toolchain "darwin")
+    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+      set(_boost_toolchain "clang")
+    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+      set(_boost_toolchain "gcc")
+    endif()
+
+    file(APPEND ${BOOST_DIR}/tools/build/v2/user-config.jam
+      "using ${_boost_toolchain} : ${CXX_COMPILER_VERSION_MAJOR}.${CXX_COMPILER_VERSION_MINOR} : ${CMAKE_CXX_COMPILER};\n")
+
     # bootstrap boost
     message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=date_time,iostreams,math,regex) ...")
     execute_process(COMMAND ./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex
@@ -105,11 +120,11 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     endif()
 
     # boost cmd
-    set (BOOST_CMD "./bjam -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} link=${BOOST_BUILD_TYPE} cxxflags=-fPIC install --build-type=complete --layout=tagged --threading=single,multi")
+    set (BOOST_CMD "./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} link=${BOOST_BUILD_TYPE} cxxflags=-fPIC install --build-type=complete --layout=tagged --threading=single,multi")
     
     # boost install
     message(STATUS "Installing Boost libraries (${BOOST_CMD}) ...")
-    execute_process(COMMAND ./bjam -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR}  -sBZIP2_SOURCE=${BZIP2_DIR} link=${BOOST_BUILD_TYPE} cxxflags=-fPIC install --build-type=complete --layout=tagged --threading=single,multi
+    execute_process(COMMAND ./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR}  -sBZIP2_SOURCE=${BZIP2_DIR} link=${BOOST_BUILD_TYPE} cxxflags=-fPIC install --build-type=complete --layout=tagged --threading=single,multi
                     WORKING_DIRECTORY ${BOOST_DIR}
                     OUTPUT_VARIABLE BOOST_INSTALL_OUT
                     ERROR_VARIABLE BOOST_INSTALL_OUT
