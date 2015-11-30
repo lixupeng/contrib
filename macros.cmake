@@ -199,11 +199,12 @@ ENDMACRO (OPENMS_BUILDLIB)
 ## @param workingdir_varname Name of the variable that points to the directory where the command is executed
 ## @param patchedfile_varname Name of the variable that is patched
 MACRO ( OPENMS_PATCH patchfile_varname workingdir_varname patchedfile_varname)
+  ## First try: with --binary (because of EOL problems, OS and patch.exe specific)
   set( PATCH_ARGUMENTS "-p0 --binary -b -N -i") ## NOTE: always keep -i as last argument !!
   if (EXISTS ${${patchedfile_varname}}.orig)
     message(STATUS "Patching ${${patchedfile_varname}} ... skipped (already applied)")
   else()
-    message(STATUS "Patching ${${patchedfile_varname}} ... ")
+    message(STATUS "Try patching ${${patchedfile_varname}} with binary option ... ")
     exec_program(${PROGRAM_PATCH} ${${workingdir_varname}}
       ARGS ${PATCH_ARGUMENTS} "\"${${patchfile_varname}}\""
       OUTPUT_VARIABLE PATCH_OUT
@@ -213,7 +214,18 @@ MACRO ( OPENMS_PATCH patchfile_varname workingdir_varname patchedfile_varname)
     file(APPEND ${LOGFILE} "${PATCH_OUT}\n\r")
 
     if (NOT PATCH_SUCCESS EQUAL 0)
-      message(STATUS "Patching ${${patchedfile_varname}} ... failed")
+      ## Second try: without --binary
+      set( PATCH_ARGUMENTS "-p0 -b -N -i") ## NOTE: always keep -i as last argument !!
+      message(STATUS "Try patching ${${patchedfile_varname}} without binary option ... ")
+      exec_program(${PROGRAM_PATCH} ${${workingdir_varname}}
+        ARGS ${PATCH_ARGUMENTS} "\"${${patchfile_varname}}\""
+        OUTPUT_VARIABLE PATCH_OUT
+        RETURN_VALUE PATCH_SUCCESS)
+    
+    file(APPEND ${LOGFILE} "${PATCH_OUT}\n\r")
+        
+    if (NOT PATCH_SUCCESS EQUAL 0)
+      message(STATUS "Patching ${${patchedfile_varname}} ... failed (with and without --binary option)")
       message(STATUS "Check if the patch was created with 'diff -u' and if the paths are correct!")
       message(STATUS "Call was: ${${workingdir_varname}}: ${PROGRAM_PATCH}  ${PATCH_ARGUMENTS} \"${${patchfile_varname}}\"")
       message(FATAL_ERROR ${PATCH_OUT})
