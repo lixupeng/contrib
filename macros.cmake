@@ -221,8 +221,9 @@ MACRO ( OPENMS_PATCH patchfile_varname workingdir_varname patchedfile_varname)
         ARGS ${PATCH_ARGUMENTS} "\"${${patchfile_varname}}\""
         OUTPUT_VARIABLE PATCH_OUT
         RETURN_VALUE PATCH_SUCCESS)
-    
-    file(APPEND ${LOGFILE} "${PATCH_OUT}\n\r")
+
+      # logfile
+      file(APPEND ${LOGFILE} "${PATCH_OUT}\n\r")
         
     if (NOT PATCH_SUCCESS EQUAL 0)
       message(STATUS "Patching ${${patchedfile_varname}} ... failed (with and without --binary option)")
