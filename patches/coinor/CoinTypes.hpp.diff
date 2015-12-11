@@ -1,0 +1,15 @@
+--- /CoinUtils/src/CoinTypes.hpp Fri Dec 11 11:38:03 2015
++++ /CoinUtils/src/CoinTypes.hpp Fri Dec 11 11:38:09 2015
+@@ -7,7 +7,11 @@
+ #include "CoinUtilsConfig.h"
+
+ #ifdef HAVE_CINTTYPES
+-# include <cinttypes>
++# ifdef _LIBCPP_VERSION
++#  include <cinttypes>
++# else
++#  include <tr1/cinttypes>
++# endif
+ #else
+ # ifdef HAVE_INTTYPES_H
+ #  include <inttypes.h>
