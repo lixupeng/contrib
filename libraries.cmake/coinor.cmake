@@ -86,7 +86,7 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
   
     # configure -- 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-      set(COINOR_EXTRA_FLAGS "CFLAGS='${CXX_OSX_FLAGS}' CXXFLAGS='${CXX_OSX_FLAGS} -stdlib=libstdc++ -fPIC' LDFLAGS='-stdlib=libstdc++' LIBS='-lstdc++' --disable-dependency-tracking")
+      set(COINOR_EXTRA_FLAGS "CFLAGS='${CXX_OSX_FLAGS}' CXXFLAGS='${CXX_OSX_FLAGS} -fPIC' --disable-dependency-tracking")
     else()
       set(COINOR_EXTRA_FLAGS "CXXFLAGS='-fPIC'")
     endif()    
