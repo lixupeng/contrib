@@ -32,6 +32,16 @@
 # $Authors: Stephan Aiche, Chris Bielow $
 # --------------------------------------------------------------------------
 
+macro(determine_compiler_version )
+  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR  "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion
+                    OUTPUT_VARIABLE CXX_COMPILER_VERSION)
+    string(REGEX MATCHALL "[0-9]+" CXX_COMPILER_COMPONENTS ${CXX_COMPILER_VERSION})
+    list(GET CXX_COMPILER_COMPONENTS 0 CXX_COMPILER_VERSION_MAJOR)
+    list(GET CXX_COMPILER_COMPONENTS 1 CXX_COMPILER_VERSION_MINOR)
+  endif()
+endmacro()
+
 ## validates the archive for the given library
 ## @param libname The libary that should be validate
 macro(validate_archive libname)
