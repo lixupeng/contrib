@@ -69,7 +69,7 @@ endmacro()
 ## @param libname The libary that should be downloaded
 macro(download_contrib_archive libname)
   # constant
-  set(_BASE_URL "http://sourceforge.net/projects/open-ms/files/contrib/")
+  set(_BASE_URL "http://build-archive.informatik.uni-tuebingen.de/openms/contrib/source_packages/")
 
   # the files/folders where downloads are stored
   set(_archive_folder "${PROJECT_BINARY_DIR}/archives")
