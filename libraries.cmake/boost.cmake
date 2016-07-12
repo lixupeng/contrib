@@ -91,16 +91,29 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     determine_compiler_version()
 
     # use proper toolchain
-    if(APPLE)
-      set(_boost_toolchain "darwin")
-    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-      set(_boost_toolchain "clang")
+    if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+      if(APPLE)
+        set(_boost_toolchain "darwin-clang")
+      else()
+        set(_boost_toolchain "clang")
+      endif()
     elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-      set(_boost_toolchain "gcc")
+      if(APPLE)
+        ## For Apples old GCC (tag in lib name will be xgcc)
+        set(_boost_toolchain "darwin") 
+      else()
+        set(_boost_toolchain "gcc")
+      endif()
     endif()
 
     file(APPEND ${BOOST_DIR}/tools/build/v2/user-config.jam
       "using ${_boost_toolchain} : ${CXX_COMPILER_VERSION_MAJOR}.${CXX_COMPILER_VERSION_MINOR} : ${CMAKE_CXX_COMPILER};\n")
+
+    if(APPLE)
+      file(APPEND ${BOOST_DIR}/tools/build/v2/tools/darwin.jam
+        "feature.extend macosx-version-min : ${CMAKE_OSX_DEPLOYMENT_TARGET} ;\n")
+    endif()
+    
 
     # bootstrap boost
     message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=date_time,iostreams,math,regex) ...")
@@ -120,11 +133,11 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     endif()
 
     # boost cmd
-    set (BOOST_CMD "./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} link=${BOOST_BUILD_TYPE} cxxflags=-fPIC install --build-type=complete --layout=tagged --threading=single,multi")
+    set (BOOST_CMD "./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} ${OSX_DEPLOYMENT_TARGET_STRING} link=${BOOST_BUILD_TYPE} cxxflags='-fPIC' install --build-type=complete --layout=tagged --threading=single,multi")
     
     # boost install
     message(STATUS "Installing Boost libraries (${BOOST_CMD}) ...")
-    execute_process(COMMAND ./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR}  -sBZIP2_SOURCE=${BZIP2_DIR} link=${BOOST_BUILD_TYPE} cxxflags=-fPIC install --build-type=complete --layout=tagged --threading=single,multi
+    execute_process(COMMAND ./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} ${OSX_DEPLOYMENT_TARGET_STRING} link=${BOOST_BUILD_TYPE} cxxflags='-fPIC' install --build-type=complete --layout=tagged --threading=single,multi
                     WORKING_DIRECTORY ${BOOST_DIR}
                     OUTPUT_VARIABLE BOOST_INSTALL_OUT
                     ERROR_VARIABLE BOOST_INSTALL_OUT
