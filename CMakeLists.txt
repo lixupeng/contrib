@@ -361,17 +361,17 @@ include ("${CMAKE_SOURCE_DIR}/libraries.cmake/wildmagic.cmake")
 ## build mac os x specific C/C++ flags
 set( OPENMS_CONTRIB_MACOSX_MIXED_MODE 0 CACHE INTERNAL "building multiple architectures on MacOSX" FORCE)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(CXX_OSX_FLAGS "-mmacosx-version-min=10.6")
-  message(STATUS "Using custom OS X architecture flags for CXX compiler: \"${CXX_OSX_FLAGS}\"")
-  file(APPEND ${LOGFILE} "Using custom OS X architecture flags for CXX compiler: \"${CXX_OSX_FLAGS}\"\n\r")
-
-  # check ich c++ is used; if, switch to g++ for some strange
-  # incompatibility reasons
-  if (${CMAKE_CXX_COMPILER} MATCHES "/c[+][+]")
-    set(MACOSX_COMPILER ${CMAKE_CXX_COMPILER})
-    string(REPLACE "c++" "g++" MACOSX_FIXED_COMPILER ${MACOSX_COMPILER})
-    message(WARNING "Using '${CMAKE_CXX_COMPILER}' may cause problems, automatically replacing by '${MACOSX_FIXED_COMPILER}'!")
-    set(CMAKE_CXX_COMPILER ${MACOSX_FIXED_COMPILER} CACHE INTERNAL "Forcing '${CMAKE_CXX_COMPILER}' compiler (replacing '${CMAKE_CXX_COMPILER}' compiler)." FORCE)
+  if( ${CMAKE_OSX_DEPLOYMENT_TARGET} )
+    set( OSX_DEPLOYMENT_TARGET_STRING "macosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    if( NOT (${CMAKE_SYSTEM_VERSION} LESS 13))
+      ## OSX 10.9 when they switched to libc++ as standard
+      message(STATUS "Be careful, since MacOS 10.9 Apple switched from libstdc++ to libc++ as standard library. Contrib needs to use the same as the OpenMS library.")
+      set( OSX_CXX_FLAGS "-stdlib=libstdc++ -m${OSX_DEPLOYMENT_TARGET_STRING}")
+      set( OSX_LINKER_FLAGS "-stdlib=libstdc++ -m${OSX_DEPLOYMENT_TARGET_STRING}")
+    else()
+      set( OSX_CXX_FLAGS "-m${OSX_DEPLOYMENT_TARGET_STRING}")
+      set( OSX_LINKER_FLAGS "-m${OSX_DEPLOYMENT_TARGET_STRING}")
+    endif()
   endif()
 
   # force cmake > 2.8.1 to avoid bugs with OSX_DEPLOYMENT_TARGET
