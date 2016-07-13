@@ -132,12 +132,16 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
       message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex) ... done")
     endif()
 
+    if(${OSX_LINKER_FLAG})
+      set(BOOST_LINKER_FLAGS linkflags=${OSX_LINKER_FLAGS})
+    endif()
+
     # boost cmd
-    set (BOOST_CMD "./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} ${OSX_DEPLOYMENT_TARGET_STRING} link=${BOOST_BUILD_TYPE} cxxflags='-fPIC ${OSX_LIB_FLAGS}' linkflags='${OSX_LINKER_FLAGS}' install --build-type=complete --layout=tagged --threading=single,multi")
+    set (BOOST_CMD "./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} ${OSX_DEPLOYMENT_TARGET_STRING} link=${BOOST_BUILD_TYPE} cxxflags='-fPIC ${OSX_LIB_FLAGS}' ${BOOST_LINKER_FLAGS} install --build-type=complete --layout=tagged --threading=single,multi")
     
     # boost install
     message(STATUS "Installing Boost libraries (${BOOST_CMD}) ...")
-    execute_process(COMMAND ./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE=${ZLIB_DIR} -sBZIP2_SOURCE=${BZIP2_DIR} ${OSX_DEPLOYMENT_TARGET_STRING} link=${BOOST_BUILD_TYPE} cxxflags='-fPIC ${OSX_CXX_FLAG}' linkflags='${OSX_LINKER_FLAG}' install --build-type=complete --layout=tagged --threading=single,multi
+    execute_process(COMMAND ./bjam toolset=${_boost_toolchain} -j ${NUMBER_OF_JOBS} -sZLIB_SOURCE="${ZLIB_DIR}" -sBZIP2_SOURCE="${BZIP2_DIR}" ${OSX_DEPLOYMENT_TARGET_STRING} link=${BOOST_BUILD_TYPE} cxxflags=-fPIC ${OSX_CXX_FLAG} ${BOOST_LINKER_FLAGS} install --build-type=complete --layout=tagged --threading=single,multi
                     WORKING_DIRECTORY ${BOOST_DIR}
                     OUTPUT_VARIABLE BOOST_INSTALL_OUT
                     ERROR_VARIABLE BOOST_INSTALL_OUT
