@@ -93,7 +93,7 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
 
     # add OS X specific flags
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-      set(ZLIB_CFLAGS "${ZLIB_CFLAGS} ${CXX_OSX_FLAGS}")
+      set(ZLIB_CFLAGS "${ZLIB_CFLAGS} ${OSX_DEPLOYMENT_FLAG}")
     endif( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
 		# configure with with prefix

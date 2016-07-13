@@ -80,7 +80,7 @@ MACRO( OPENMS_CONTRIB_BUILD_BZIP2 )
 
     # add OS X specific flags
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-      set(BZIP2_CFLAGS "${BZIP2_CFLAGS} ${CXX_OSX_FLAGS}")
+      set(BZIP2_CFLAGS "${BZIP2_CFLAGS} ${OSX_DEPLOYMENT_FLAG}")
     endif( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
 		message(STATUS "Generating bzip2 build system .. ")
