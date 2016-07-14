@@ -20,9 +20,9 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
 		## - changed used runtime library to dynamic version (Release & Debug mode)
 		## - deleted contents of CoinMP-1.3.3\CoinMP\MSVisualStudio\v8\release (there were precompiled dll's and lib's)
 
-    set(PATCH_FILE "${PATCH_DIR}/coinor/CoinLpIO.diff")
-    set(PATCHED_FILE "${COINOR_DIR}/CoinUtils/src/CoinLpIO.cpp")
-    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+    # set(PATCH_FILE "${PATCH_DIR}/coinor/CoinLpIO.diff")
+    # set(PATCHED_FILE "${COINOR_DIR}/CoinUtils/src/CoinLpIO.cpp")
+    # OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
 	
     set(MSBUILD_ARGS_SLN "${COINOR_DIR}/CoinMP/MSVisualStudio/v${CONTRIB_MSVC_VERSION}/CoinMP.sln")
     set(MSBUILD_ARGS_TARGET "libCbc")

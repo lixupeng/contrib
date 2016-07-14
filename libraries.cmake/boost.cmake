@@ -36,10 +36,13 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
       
       ## check for failed bootstrapping. Even if failing the return code can be 0 (indicating success), so we additionally check the output 
       if ((NOT BOOST_BOOTSTRAP_SUCCESS EQUAL 0) OR (BOOST_BOOTSTRAP_OUT MATCHES "[fF]ailed"))
-        message(STATUS "Bootstrapping Boost libraries (bootstrap.bat) ... failed\nOutput was ${BOOST_BOOTSTRAP_OUT}\n")
+        message(STATUS "Bootstrapping Boost libraries (bootstrap.bat) ... failed\nOutput was:\n ${BOOST_BOOTSTRAP_OUT}\nEnd of output.\n")
+        message(STATUS "Renaming bootstrap.log to bootstrap_firstTry.log")
+        file(RENAME ${BOOST_DIR}/bootstrap.log ${BOOST_DIR}/bootstrap_firstTry.log)
         ### on some command lines bootstrapping fail (e.g. the toolset is too new) or will give:
         # "Building Boost.Build engine. The input line is too long."
         ## ,thus we provide a backup bjam.exe(32bit), which hopefully works on all target systems.
+        ## However this bjam results in a version mismatch and a warning (that you can ignore).
         message(STATUS " ... trying fallback with backup bjam.exe ...")
         configure_file("${PROJECT_SOURCE_DIR}/patches/boost/bjam.exe" "${BOOST_DIR}/bjam.exe" COPYONLY)
       else()
