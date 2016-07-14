@@ -185,9 +185,13 @@ set(ARCHIVE_ZLIB zlib-1.2.5.tar.gz)
 set(ARCHIVE_ZLIB_TAR  zlib-1.2.5.tar)
 set(ARCHIVE_ZLIB_SHA1 "8e8b93fa5eb80df1afe5422309dca42964562d7e")
 
-set(ARCHIVE_BOOST boost_1_52_0.tar.gz)
-set(ARCHIVE_BOOST_TAR  boost_1_52_0.tar)
-set(ARCHIVE_BOOST_SHA1 "7cddbfd33fc99ed69343cd5cf8461648f8eae75a")
+# set(ARCHIVE_BOOST boost_1_52_0.tar.gz)
+# set(ARCHIVE_BOOST_TAR  boost_1_52_0.tar)
+# set(ARCHIVE_BOOST_SHA1 "7cddbfd33fc99ed69343cd5cf8461648f8eae75a")
+
+set(ARCHIVE_BOOST boost_1_61_0.tar.gz)
+set(ARCHIVE_BOOST_TAR  boost_1_61_0.tar)
+set(ARCHIVE_BOOST_SHA1 "2d2b80771f584f327827193fcf3abf836edcdfaa")
 
 set(ARCHIVE_XERCES xerces-c-3.1.1.tar.gz)
 set(ARCHIVE_XERCES_TAR  xerces-c-3.1.1.tar)
@@ -256,6 +260,7 @@ set(LOGFILE "${PROJECT_BINARY_DIR}/contrib_build.log")
 
 if (MSVC)
   ## guess MSVC Version (we need this in order to correctly guess the names of the VS solution targets.
+  ## Since CMake 3.0 you can use the years (e.g. 2013) for every VS version. For VS 8 and 9 you have to use the year!
   if (CMAKE_GENERATOR MATCHES ".*Visual Studio 8 2005.*")
     set(TMP_MSVC_VERSION "8")
   elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 9 2008.*")
