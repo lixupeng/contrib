@@ -153,7 +153,7 @@ set (PATCH_DIR "${PROJECT_SOURCE_DIR}/patches/" CACHE STRING "Directory containi
 ## Warning: ensure these are all upper-case names!
 set(BZIP2_DIR ${CONTRIB_BIN_SOURCE_DIR}/bzip2-1.0.5)
 set(ZLIB_DIR ${CONTRIB_BIN_SOURCE_DIR}/zlib-1.2.5)
-set(BOOST_DIR ${CONTRIB_BIN_SOURCE_DIR}/boost_1_52_0)
+set(BOOST_DIR ${CONTRIB_BIN_SOURCE_DIR}/boost_1_61_0)
 set(XERCES_DIR ${CONTRIB_BIN_SOURCE_DIR}/xerces-c-3.1.1)
 set(GSL_DIR ${CONTRIB_BIN_SOURCE_DIR}/gsl-1.13)
 set(LIBSVM_DIR ${CONTRIB_BIN_SOURCE_DIR}/libsvm-3.12)
@@ -374,8 +374,8 @@ include ("${CMAKE_SOURCE_DIR}/libraries.cmake/wildmagic.cmake")
 ## build mac os x specific C/C++ flags
 set( OPENMS_CONTRIB_MACOSX_MIXED_MODE 0 CACHE INTERNAL "building multiple architectures on MacOSX" FORCE)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  message(STATUS "Deployment target for OSX was set to ${CMAKE_OSX_DEPLOYMENT_TARGET}. Adding the following flags whenever possible/needed:\n\r")
   if( ${CMAKE_OSX_DEPLOYMENT_TARGET} )
+  message(STATUS "Deployment target for OSX was set to ${CMAKE_OSX_DEPLOYMENT_TARGET}. Adding the following flags whenever possible/needed:\n\r")
     set( OSX_DEPLOYMENT_TARGET_STRING "macosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
     set( OSX_DEPLOYMENT_FLAG "-m${OSX_DEPLOYMENT_TARGET_STRING}")
     if( NOT (${CMAKE_SYSTEM_VERSION} LESS 13))
