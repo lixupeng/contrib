@@ -109,12 +109,16 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
       endif()
     endif()
 
-    file(APPEND ${BOOST_DIR}/tools/build/v2/user-config.jam
+    ## In case we specified a non-existent toolchain. Just use whatever CMake detected/knows.
+    file(APPEND ${BOOST_DIR}/tools/build/src/user-config.jam
       "using ${_boost_toolchain} : ${CXX_COMPILER_VERSION_MAJOR}.${CXX_COMPILER_VERSION_MINOR} : ${CMAKE_CXX_COMPILER};\n")
 
     if(APPLE)
-      file(APPEND ${BOOST_DIR}/tools/build/v2/tools/darwin.jam
+      ## Boost looks for installed SDKs, but sometimes you dont have them. Add them to not fail.
+      file(APPEND ${BOOST_DIR}/tools/build/src/tools/darwin.jam
         "feature.extend macosx-version-min : ${CMAKE_OSX_DEPLOYMENT_TARGET} ;\n")
+
+      set(BOOST_LINKER_FLAGS linkflags=${OSX_LIB_FLAG})
     endif()
     
 
@@ -133,10 +137,6 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
       message(FATAL_ERROR ${BOOST_BOOTSTRAPPING_OUT})
     else()
       message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex) ... done")
-    endif()
-
-    if(${OSX_LINKER_FLAG})
-      set(BOOST_LINKER_FLAGS linkflags=${OSX_LINKER_FLAGS})
     endif()
 
     # boost cmd
