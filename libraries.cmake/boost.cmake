@@ -113,12 +113,15 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     file(APPEND ${BOOST_DIR}/tools/build/src/user-config.jam
       "using ${_boost_toolchain} : ${CXX_COMPILER_VERSION_MAJOR}.${CXX_COMPILER_VERSION_MINOR} : ${CMAKE_CXX_COMPILER};\n")
 
-    if(APPLE)
-      ## Boost looks for installed SDKs, but sometimes you dont have them. Add them to not fail.
+    if(APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET)
+      ## Boost looks for installed SDKs, but sometimes you dont have them. Add them still to not fail. Clang will handle it.
       file(APPEND ${BOOST_DIR}/tools/build/src/tools/darwin.jam
         "feature.extend macosx-version-min : ${CMAKE_OSX_DEPLOYMENT_TARGET} ;\n")
 
-      set(BOOST_LINKER_FLAGS linkflags=${OSX_LIB_FLAG})
+      ## Add corresponding linker flags. Empty is not possible, therefore the if.
+      if(OSX_LIB_FLAG)
+        set(BOOST_LINKER_FLAGS linkflags=${OSX_LIB_FLAG})
+      endif()
     endif()
     
 
