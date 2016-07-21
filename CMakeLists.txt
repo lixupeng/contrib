@@ -2,7 +2,7 @@
 #                   OpenMS -- Open-Source Mass Spectrometry
 # --------------------------------------------------------------------------
 # Copyright The OpenMS Team -- Eberhard Karls University Tuebingen,
-# ETH Zurich, and Freie Universitaet Berlin 2002-2012.
+# ETH Zurich, and Freie Universitaet Berlin 2002-2016.
 #
 # This software is released under a three-clause BSD license:
 #  * Redistributions of source code must retain the above copyright
@@ -88,10 +88,6 @@
 ## Windows: 7-Zip & GNUWin32-patch
 ## Linux&MinGW: Tar & patch
 ## (these are searched for and an appropriate error message is given when not found)
-
-## Example call (for developers only) - remove QUICKBUILD to build BOOST:
-## cmake -D CONTRIB_ADDRESSMODEL:STRING=64 -D QUICKBUILD:BOOL=1 -G "Visual Studio 9 2008" ..\contrib_win
-## cmake -D CONTRIB_ADDRESSMODEL:STRING=32 -G "Visual Studio 8 2005" ..\contrib_win
 
 
 ## NOTE: remove "exec_program" calls and substitute with exec_process (see http://www.cmake.org/cmake/help/cmake2.6docs.html#command:execute_process)
@@ -263,7 +259,7 @@ if (MSVC)
   elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 12.*")
     set(TMP_MSVC_VERSION "12")
   else()
-    message(FATAL_ERROR "Please use 'Visual Studio 8 2005 [Win64]' or 'Visual Studio 9 2008 [Win64]' or 'Visual Studio 10 [Win64]' or 'Visual Studio 11 [Win64]' or 'Visual Studio 12 [Win64]'as Generator - identical to the one you plan to use for OpenMS!")
+    message(FATAL_ERROR "Please use 'Visual Studio XX [Win64]' (X={8 2005, 9 2008, 10, 11, 12}) as Generator - identical to the MSVC toolchain you plan to use for OpenMS! Note that you must not use NMake or alike for the contrib (nor for OpenMS). There will be errors (mostly missing libraries).")
   endif()
   set(CONTRIB_MSVC_VERSION ${TMP_MSVC_VERSION} CACHE INTERNAL "Microsoft Visual Studio Version used. Valid values: 8 and above")
   ## parameter validity check
