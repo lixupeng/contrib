@@ -259,7 +259,7 @@ if (MSVC)
   elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 12.*")
     set(TMP_MSVC_VERSION "12")
   else()
-    message(FATAL_ERROR "Please use 'Visual Studio XX [Win64]' (X={8 2005, 9 2008, 10, 11, 12}) as Generator - identical to the MSVC toolchain you plan to use for OpenMS! Note that you must not use NMake or alike for the contrib (nor for OpenMS). There will be errors (mostly missing libraries).")
+    message(FATAL_ERROR "Please use 'Visual Studio ?? [Win64]' (??={8 2005, 9 2008, 10, 11, 12}) as Generator - identical to the MSVC toolchain you plan to use for OpenMS! Note that you must not use NMake or alike for the contrib (nor for OpenMS). There will be errors (mostly missing libraries).")
   endif()
   set(CONTRIB_MSVC_VERSION ${TMP_MSVC_VERSION} CACHE INTERNAL "Microsoft Visual Studio Version used. Valid values: 8 and above")
   ## parameter validity check
