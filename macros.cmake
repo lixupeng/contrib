@@ -185,10 +185,10 @@ MACRO ( OPENMS_BUILDLIB libname solutionfile_varname target_varname config worki
 
   find_program(MSBUILD_EXECUTABLE MSBuild)
   if (MSBUILD_EXECUTABLE)
-    message(STATUS "Finding MSBuild.exe (usually installed along with .NET) ... success")
+    message(STATUS "Finding MSBuild.exe (usually installed along with .NET or VS [since 12] ) ... success")
   else()
-    message(STATUS "Finding MSBuild.exe (usually installed along with .NET) ... failed")
-    message(STATUS "\n\nPlease install Microsoft .NET (3.5 or above) and/or make sure MSBuild.exe is in your PATH!\n\n")
+    message(STATUS "Finding MSBuild.exe (usually installed along with .NET or VS [since 12]) ... failed")
+    message(STATUS "\n\nIf not shipped with your Visual Studio version (e.g. <12), please install Microsoft .NET (3.5 or above) and/or make sure MSBuild.exe is in your PATH!\n\n")
     message(FATAL_ERROR ${MSBUILD_EXECUTABLE})
   endif()
   exec_program(MSBuild ${${workingdir_varname}}

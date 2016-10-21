@@ -2,7 +2,7 @@
 ###       GSL   															 ###
 ##################################################
 ## GSL from http://gnuwin32.sourceforge.net/packages/gsl.htm
-## repacked installed files (deleting precompiled libraries) and created VisualStudio 2008 files
+## repacked installed files (deleting precompiled libraries) and created VisualStudio solutions
 
 MACRO( OPENMS_CONTRIB_BUILD_GSL )
   OPENMS_LOGHEADER_LIBRARY("GSL")
@@ -15,7 +15,7 @@ MACRO( OPENMS_CONTRIB_BUILD_GSL )
   OPENMS_SMARTEXTRACT(ZIP_ARGS ARCHIVE_GSL "GSL" "INSTALL")
   
   if(MSVC)
-	if (CONTRIB_MSVC_VERSION STREQUAL "12")
+	if (CONTRIB_MSVC_VERSION GREATER "11")
 		# patch config.h (for VS12 only, since math.h defines some functions which GSL re-defines otherwise)
 		set(PATCH_FILE "${PATCH_DIR}/gsl/config.diff")
 		set(PATCHED_FILE "${GSL_DIR}/config.h")

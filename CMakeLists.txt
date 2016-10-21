@@ -161,7 +161,7 @@ set(WILDMAGIC_DIR ${CONTRIB_BIN_SOURCE_DIR}/WildMagic5)
 
 ## source(archive) paths
 ## PLEASE upload all source archives to
-##     https://sourceforge.net/projects/open-ms/files/contrib/
+##     http://ftp.mi.fu-berlin.de/pub/OpenMS/contrib-sources/
 ## and provide the necessary information below
 ##  ARCHIVE_<LIBNAME> the name of the archive as it was uploaded
 ##  ARCHIVE_<LIBNAME>_TAR the name of the tar in the tar.gz
@@ -191,11 +191,11 @@ set(ARCHIVE_BOOST_SHA1 "2d2b80771f584f327827193fcf3abf836edcdfaa")
 
 set(ARCHIVE_XERCES xerces-c-3.1.1.tar.gz)
 set(ARCHIVE_XERCES_TAR  xerces-c-3.1.1.tar)
-set(ARCHIVE_XERCES_SHA1 "1f9b1bf419526dbaa8d2aff177a5048ca66093cb")
+set(ARCHIVE_XERCES_SHA1 "9ec2c6993a9c72b73b2819b2ad33856ad39089d9")
 
 set(ARCHIVE_GSL gsl-1.13.tar.gz)
 set(ARCHIVE_GSL_TAR  gsl-1.13.tar)
-set(ARCHIVE_GSL_SHA1 "704845d46d4a1fd807543a42a58b3fb17f13dfaa")
+set(ARCHIVE_GSL_SHA1 "794da0fd7df668967368e2b8c8b391e41c58b276")
 
 set(ARCHIVE_LIBSVM libsvm-3.12.tar.gz)
 set(ARCHIVE_LIBSVM_TAR  libsvm-3.12.tar)
@@ -215,7 +215,7 @@ set(ARCHIVE_GLPK_SHA1 "73d589452dc1d8d6a784b3f86f4268cae37420d7")
 
 set(ARCHIVE_COINOR CoinMP-1.8.3.tar.gz)
 set(ARCHIVE_COINOR_TAR  CoinMP-1.8.3.tar)
-set(ARCHIVE_COINOR_SHA1 "e896faf959064195d0cc2548838538f6583e029a")
+set(ARCHIVE_COINOR_SHA1 "3d4570d4b529009a628e51a7620863da6580c4d3")
 
 set(ARCHIVE_EIGEN eigen-3.2.0.tar.gz)
 set(ARCHIVE_EIGEN_TAR  eigen-3.2.0.tar)
@@ -267,8 +267,10 @@ if (MSVC)
     set(TMP_MSVC_VERSION "11")
   elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 12.*")
     set(TMP_MSVC_VERSION "12")
+  elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 14.*")
+    set(TMP_MSVC_VERSION "14")
   else()
-    message(FATAL_ERROR "Please use 'Visual Studio ?? [Win64]' (??={8 2005, 9 2008, 10, 11, 12}) as Generator - identical to the MSVC toolchain you plan to use for OpenMS! Note that you must not use NMake or alike for the contrib (nor for OpenMS). There will be errors (mostly missing libraries).")
+    message(FATAL_ERROR "Please use 'Visual Studio ?? [Win64]' (??={8 2005, 9 2008, 10, 11, 12, 14}) as Generator - identical to the MSVC toolchain you plan to use for OpenMS! Note that you must not use NMake or alike for the contrib (nor for OpenMS). There will be errors (mostly missing libraries).")
   endif()
   set(CONTRIB_MSVC_VERSION ${TMP_MSVC_VERSION} CACHE INTERNAL "Microsoft Visual Studio Version used. Valid values: 8 and above")
   ## parameter validity check
@@ -333,15 +335,6 @@ else() ## linux/Mingw/macos
   endif()
 
 endif()
-
-# see if we use GNU CXX/CC -- this one is required for CGAL etc.
-# TODO: check if this one is really working
-#if(NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCXX)
-#  message(FATAL_ERROR "Please specify the GNU CXX (g++) as C++ compiler")
-#elseif(NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCC)
-#  message(FATAL_ERROR "Please specify the GNU C (gcc) as C compiler")
-#endif()
-
 
 ## prepare
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
@@ -518,7 +511,7 @@ if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "WILDMAGIC")
 endif()
 
 ## finally copy README.txt to project-binary directory to mark process complete
-configure_file("${PROJECT_SOURCE_DIR}/README.md" "${PROJECT_BINARY_DIR}/README_contrib1.7.txt"  COPYONLY)
+configure_file("${PROJECT_SOURCE_DIR}/README.md" "${PROJECT_BINARY_DIR}/README_contrib.txt"  COPYONLY)
 
 message(STATUS "")
 message(STATUS "")
