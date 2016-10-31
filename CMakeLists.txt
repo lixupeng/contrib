@@ -156,7 +156,7 @@ set(LIBSVM_DIR ${CONTRIB_BIN_SOURCE_DIR}/libsvm-3.12)
 set(SEQAN_DIR ${CONTRIB_BIN_SOURCE_DIR}/seqan-1.4.1)
 set(GLPK_DIR ${CONTRIB_BIN_SOURCE_DIR}/glpk-4.46)
 set(COINOR_DIR ${CONTRIB_BIN_SOURCE_DIR}/CoinMP-1.8.3)
-set(EIGEN_DIR ${CONTRIB_BIN_SOURCE_DIR}/eigen-eigen-ffa86ffb5570)
+set(EIGEN_DIR ${CONTRIB_BIN_SOURCE_DIR}/eigen-eigen-491bc9c5a46b)
 set(WILDMAGIC_DIR ${CONTRIB_BIN_SOURCE_DIR}/WildMagic5)
 
 ## source(archive) paths
@@ -217,8 +217,8 @@ set(ARCHIVE_COINOR CoinMP-1.8.3.tar.gz)
 set(ARCHIVE_COINOR_TAR  CoinMP-1.8.3.tar)
 set(ARCHIVE_COINOR_SHA1 "e8b0e4e2fe8a0e3fa29744b9dfd7b1c5c0954451")
 
-set(ARCHIVE_EIGEN eigen-3.2.0.tar.gz)
-set(ARCHIVE_EIGEN_TAR  eigen-3.2.0.tar)
+set(ARCHIVE_EIGEN eigen-3.2.10.tar.gz)
+set(ARCHIVE_EIGEN_TAR  eigen-3.2.10.tar)
 set(ARCHIVE_EIGEN_SHA1 "7134378dd56608f67dd66ff6d5a2dfb077ef52a4")
 
 set(ARCHIVE_WILDMAGIC WildMagic5.tar.gz)
