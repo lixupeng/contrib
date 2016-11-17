@@ -375,6 +375,13 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif()
     message(STATUS "${OSX_DEPLOYMENT_FLAG} ${OSX_LIB_FLAG}")
   endif()
+  
+  #if( ${CMAKE_OSX_SYSROOT} )
+  #message(STATUS "Sysroot for OSX was set to ${CMAKE_OSX_SYSROOT}. Adding the following flags whenever possible/needed:\n\r")
+  #  set( OSX_SYSROOT_STRING "sysroot=${CMAKE_OSX_SYSROOT}")
+  #  set( OSX_SYSROOT_FLAG "-i${OSX_SYSROOT_STRING}")
+  #  message(STATUS "${OSX_SYSROOT_FLAG}")
+  #endif()
 
   # force cmake > 2.8.1 to avoid bugs with OSX_DEPLOYMENT_TARGET
   cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
