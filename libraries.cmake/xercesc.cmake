@@ -42,7 +42,7 @@ MACRO( OPENMS_CONTRIB_BUILD_XERCESC )
     
 		# configure -- 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-      set(XERCESC_EXTRA_FLAGS "--disable-dependency-tracking CFLAGS='${OSX_DEPLOYMENT_FLAG}' CXXFLAGS='${OSX_DEPLOYMENT_FLAG} ${OSX_LIB_FLAG}'")
+      set(XERCESC_EXTRA_FLAGS "--disable-dependency-tracking CFLAGS='${OSX_DEPLOYMENT_FLAG} ${OSX_SYSROOT_FLAG}' CXXFLAGS='${OSX_DEPLOYMENT_FLAG} ${OSX_SYSROOT_FLAG} ${OSX_LIB_FLAG}'")
     endif( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
     message( STATUS "Configuring XERCES-C library (./configure --prefix ${CMAKE_BINARY_DIR} --disable-network --disable-transcoder-iconv --disable-transcoder-icu --disable-shared --with-pic ${XERCESC_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. ")
