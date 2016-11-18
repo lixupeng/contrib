@@ -89,7 +89,7 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
 
 	# configure with with prefix
     message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR}) .. ")
-    exec_program("./configure" ${ZLIB_DIR}
+    exec_program("CFLAGS='-O3 ${OSX_SYSROOT_FLAG}' ./configure" ${ZLIB_DIR}
       ARGS
       --prefix=${CMAKE_BINARY_DIR}
       OUTPUT_VARIABLE ZLIB_CONFIGURE_OUT
