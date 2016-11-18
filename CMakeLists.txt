@@ -363,7 +363,7 @@ include ("${CMAKE_SOURCE_DIR}/libraries.cmake/wildmagic.cmake")
 ## build mac os x specific C/C++ flags
 set( OPENMS_CONTRIB_MACOSX_MIXED_MODE 0 CACHE INTERNAL "building multiple architectures on MacOSX" FORCE)
 if(APPLE)
-  if( ${CMAKE_OSX_DEPLOYMENT_TARGET} )
+  if( DEFINED CMAKE_OSX_DEPLOYMENT_TARGET )
   message(STATUS "Deployment target for OSX was set to ${CMAKE_OSX_DEPLOYMENT_TARGET}. Adding the following flags whenever possible/needed:\n\r")
     set( OSX_DEPLOYMENT_TARGET_STRING "macosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
     set( OSX_DEPLOYMENT_FLAG "-m${OSX_DEPLOYMENT_TARGET_STRING}")
@@ -376,7 +376,7 @@ if(APPLE)
     message(STATUS "${OSX_DEPLOYMENT_FLAG} ${OSX_LIB_FLAG}")
   endif()
   
-  if( ${CMAKE_OSX_SYSROOT} )
+  if( DEFINED CMAKE_OSX_SYSROOT )
     message(STATUS "Sysroot for OSX was set to ${CMAKE_OSX_SYSROOT}. Adding the following flags whenever possible/needed:\n\r")
     set( OSX_SYSROOT_STRING "sysroot=${CMAKE_OSX_SYSROOT}")
     set( OSX_SYSROOT_FLAG "--${OSX_SYSROOT_STRING}")
@@ -385,7 +385,7 @@ if(APPLE)
 
   # force cmake > 2.8.1 to avoid bugs with OSX_DEPLOYMENT_TARGET
   cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+endif()
 
 list(FIND VALID_BUILD_TYPES ${BUILD_TYPE} list_pos)
 if( ${list_pos} EQUAL -1 )
