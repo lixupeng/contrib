@@ -96,7 +96,7 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     # use proper toolchain
     if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
       if(APPLE)
-        set(_boost_toolchain "darwin-clang")
+        set(_boost_toolchain "clang-darwin")
       else()
         set(_boost_toolchain "clang")
       endif()
