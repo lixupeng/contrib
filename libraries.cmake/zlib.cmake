@@ -91,16 +91,15 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
     set(ZLIB_CFLAGS "-Wall -O3 -fPIC")
 
     # add OS X specific flags
-    if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+    if( APPLE )
       set(ZLIB_CFLAGS "${ZLIB_CFLAGS} ${OSX_DEPLOYMENT_FLAG}")
-    endif( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+    endif( APPLE )
 
 	# configure with with prefix
-    message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR} ${ZLIB_EXTRA_FLAGS}) .. ")
+    message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR}) .. ")
     exec_program("./configure" ${ZLIB_DIR}
       ARGS
       --prefix=${CMAKE_BINARY_DIR}
-      ${ZLIB_EXTRA_FLAGS}
       OUTPUT_VARIABLE ZLIB_CONFIGURE_OUT
       RETURN_VALUE ZLIB_CONFIGURE_SUCCESS
       )  
@@ -109,10 +108,10 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
     file(APPEND ${LOGFILE} ${ZLIB_CONFIGURE_OUT})
 
     if( NOT ZLIB_CONFIGURE_SUCCESS EQUAL 0)
-      message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR} ${ZLIB_EXTRA_FLAGS}) .. failed")
+      message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR}) .. failed")
       message( FATAL_ERROR ${ZLIB_CONFIGURE_OUT})
     else()
-      message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR} ${ZLIB_EXTRA_FLAGS}) .. done")
+      message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR}) .. done")
     endif()
 		
 
