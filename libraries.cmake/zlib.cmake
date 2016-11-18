@@ -84,7 +84,7 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
 
     # add OS X specific flags
     if( APPLE )
-      set(ZLIB_CFLAGS "${ZLIB_CFLAGS} ${OSX_DEPLOYMENT_FLAG}")
+      set(ZLIB_CFLAGS "${ZLIB_CFLAGS} ${OSX_DEPLOYMENT_FLAG} ${OSX_SYSROOT_FLAG}")
     endif( APPLE )
 
 	# configure with with prefix
