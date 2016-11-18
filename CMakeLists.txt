@@ -95,7 +95,7 @@
 
 # Determine what to build (all or single library)
 set( BUILD_TYPE LIST CACHE STRING "Can be used to restrict building to a single library: ALL,SEQAN,LIBSVM,XERCESC,BOOST,GSL,COINOR,BZIP2,ZLIB,GLPK")
-set( VALID_BUILD_TYPES "ALL" "SEQAN" "LIBSVM" "XERCESC" "BOOST" "GSL" "COINOR" "BZIP2" "ZLIB" "GLPK" "EIGEN" "WILDMAGIC")
+set( VALID_BUILD_TYPES "ALL" "SEQAN" "LIBSVM" "XERCESC" "BOOST" "COINOR" "BZIP2" "ZLIB" "GLPK" "EIGEN" "WILDMAGIC")
 # check build type
 if (BUILD_TYPE STREQUAL "HELP" OR BUILD_TYPE STREQUAL "LIST")
   message(STATUS "===========================================================================")
@@ -151,7 +151,6 @@ set(BZIP2_DIR ${CONTRIB_BIN_SOURCE_DIR}/bzip2-1.0.5)
 set(ZLIB_DIR ${CONTRIB_BIN_SOURCE_DIR}/zlib-1.2.5)
 set(BOOST_DIR ${CONTRIB_BIN_SOURCE_DIR}/boost_1_61_0)
 set(XERCES_DIR ${CONTRIB_BIN_SOURCE_DIR}/xerces-c-3.1.1)
-set(GSL_DIR ${CONTRIB_BIN_SOURCE_DIR}/gsl-1.13)
 set(LIBSVM_DIR ${CONTRIB_BIN_SOURCE_DIR}/libsvm-3.12)
 set(SEQAN_DIR ${CONTRIB_BIN_SOURCE_DIR}/seqan-1.4.1)
 set(GLPK_DIR ${CONTRIB_BIN_SOURCE_DIR}/glpk-4.46)
@@ -193,10 +192,6 @@ set(ARCHIVE_XERCES xerces-c-3.1.1-vs15.tar.gz)
 set(ARCHIVE_XERCES_TAR  xerces-c-3.1.1.tar)
 set(ARCHIVE_XERCES_SHA1 "9ec2c6993a9c72b73b2819b2ad33856ad39089d9")
 
-set(ARCHIVE_GSL gsl-1.13-vs15.tar.gz)
-set(ARCHIVE_GSL_TAR  gsl-1.13.tar)
-set(ARCHIVE_GSL_SHA1 "794da0fd7df668967368e2b8c8b391e41c58b276")
-
 set(ARCHIVE_LIBSVM libsvm-3.12.tar.gz)
 set(ARCHIVE_LIBSVM_TAR  libsvm-3.12.tar)
 set(ARCHIVE_LIBSVM_SHA1 "6ee77eb3d89af07fe48058dba0dcc24c85020b85")
@@ -228,7 +223,6 @@ set(ARCHIVE_WILDMAGIC_SHA1 "e30b6f7f955c640dadfea09385a0a0ddec5b2997")
 ## necessary for clean up .. change if install process of library changes
 set(INCLUDE_DIR_BOOST ${CONTRIB_BIN_INCLUDE_DIR}/boost)
 set(INCLUDE_DIR_XERCES ${CONTRIB_BIN_INCLUDE_DIR}/xercesc)
-set(INCLUDE_DIR_GSL ${CONTRIB_BIN_INCLUDE_DIR}/gsl)
 set(INCLUDE_DIR_SEQAN ${CONTRIB_BIN_INCLUDE_DIR}/seqan)
 set(INCLUDE_DIR_GLPK ${CONTRIB_BIN_INCLUDE_DIR}/GLPK)
 set(INCLUDE_DIR_COINOR ${CONTRIB_BIN_INCLUDE_DIR}/coin)
@@ -464,16 +458,6 @@ endif()
 if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "BOOST")
   OPENMS_CLEAN_LIB("BOOST")
   OPENMS_CONTRIB_BUILD_BOOST()
-endif()
-
-##################################################
-###       GSL                                  ###
-##################################################
-
-if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "GSL")
-  OPENMS_CLEAN_LIB("GSL")
-  OPENMS_CONTRIB_BUILD_GSL()
-  OPENMS_COPY_LIBS("GSL")
 endif()
 
 
