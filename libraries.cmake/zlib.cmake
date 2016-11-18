@@ -79,15 +79,7 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
   
 	else() ## Linux/MacOS  
 
-    # Workaround for bug https://github.com/OpenMS/contrib/issues/5 
-    # Basically, the configure script of zlib has a nasty property of checking
-    # whether the current compiler is gcc or not by direct string comparison.
-    # Apparently it really likes gcc and if the $CC variable is set to anything
-    # else (or even set at all), it will likely refuse to work.
-    set(old_CC $ENV{CC})
-    UNSET(ENV{CC})
-
-	# CFLAGS for libsvm compiler (see libsvm Makefile)
+    # CFLAGS for libsvm compiler (see libsvm Makefile)
     set(ZLIB_CFLAGS "-Wall -O3 -fPIC")
 
     # add OS X specific flags
@@ -152,9 +144,6 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
     else()
       message( STATUS "Installing zlib library (make install) .. done")
     endif()
-
-    # reset CC, see https://github.com/OpenMS/contrib/issues/5 
-    SET(ENV{CC} ${old_CC})
 
 endif()
 
