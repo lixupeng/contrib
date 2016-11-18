@@ -110,8 +110,8 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     endif()
 
     ## In case we specified a non-existent toolchain. Just use whatever CMake detected/knows.
-    file(APPEND ${BOOST_DIR}/tools/build/src/user-config.jam
-      "using ${_boost_toolchain} : ${CXX_COMPILER_VERSION_MAJOR}.${CXX_COMPILER_VERSION_MINOR} : ${CMAKE_CXX_COMPILER};\n")
+    ##file(APPEND ${BOOST_DIR}/tools/build/src/user-config.jam
+    ##  "using ${_boost_toolchain} : ${CXX_COMPILER_VERSION_MAJOR}.${CXX_COMPILER_VERSION_MINOR} : ${CMAKE_CXX_COMPILER};\n")
 
     if(APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET)
       ## Boost looks for installed SDKs, but sometimes you dont have them. Add them still to not fail. Clang will handle it.
