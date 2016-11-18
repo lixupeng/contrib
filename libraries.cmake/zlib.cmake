@@ -85,11 +85,13 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
     # add OS X specific flags
     if( APPLE )
       set(ZLIB_CFLAGS "${ZLIB_CFLAGS} ${OSX_DEPLOYMENT_FLAG} ${OSX_SYSROOT_FLAG}")
+      set(OLD_CFLAGS $ENV{CFLAGS})
+      set(ENV{CFLAGS} "-O3 ${OSX_SYSROOT_FLAG}")
     endif( APPLE )
 
 	# configure with with prefix
     message( STATUS "Configuring zlib library (./configure --prefix=${CMAKE_BINARY_DIR}) .. ")
-    exec_program("CFLAGS='-O3 ${OSX_SYSROOT_FLAG}' ./configure" ${ZLIB_DIR}
+    exec_program("./configure" ${ZLIB_DIR}
       ARGS
       --prefix=${CMAKE_BINARY_DIR}
       OUTPUT_VARIABLE ZLIB_CONFIGURE_OUT
@@ -144,6 +146,10 @@ MACRO( OPENMS_CONTRIB_BUILD_ZLIB )
     else()
       message( STATUS "Installing zlib library (make install) .. done")
     endif()
+    
+    if( APPLE )
+      set(ENV{CFLAGS} ${OLD_CFLAGS})
+    endif( APPLE )
 
 endif()
 
