@@ -126,8 +126,8 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     
 
     # bootstrap boost
-    message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=date_time,iostreams,math,regex) ...")
-    execute_process(COMMAND ./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex
+    message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_toolchain} --with-libraries=date_time,iostreams,math,regex) ...")
+    execute_process(COMMAND ./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_toolchain} --with-libraries=iostreams,math,date_time,regex
                     WORKING_DIRECTORY ${BOOST_DIR}
                     OUTPUT_VARIABLE BOOST_BOOTSTRAP_OUT
                     ERROR_VARIABLE BOOST_BOOTSTRAP_OUT
