@@ -93,18 +93,22 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     # we need to know the compiler version for proper formating boost user-config.jam
     determine_compiler_version()
 
-    # use proper toolchain
+    # use proper toolchain (random guesses. There is not proper documentation)
     if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
       if(APPLE)
+        set(_boost_bootstrap_toolchain "darwin")
         set(_boost_toolchain "clang-darwin")
       else()
+        set(_boost_bootstrap_toolchain "clang")
         set(_boost_toolchain "clang")
       endif()
     elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
       if(APPLE)
         ## For Apples old GCC (tag in lib name will be xgcc)
+        set(_boost_bootstrap_toolchain "darwin")
         set(_boost_toolchain "darwin") 
       else()
+        set(_boost_bootstrap_toolchain "gcc")
         set(_boost_toolchain "gcc")
       endif()
     endif()
@@ -126,8 +130,8 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     
 
     # bootstrap boost
-    message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_toolchain} --with-libraries=date_time,iostreams,math,regex) ...")
-    execute_process(COMMAND ./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_toolchain} --with-libraries=iostreams,math,date_time,regex
+    message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_bootstrap_toolchain} --with-libraries=date_time,iostreams,math,regex) ...")
+    execute_process(COMMAND ./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_bootstrap_toolchain} --with-libraries=iostreams,math,date_time,regex
                     WORKING_DIRECTORY ${BOOST_DIR}
                     OUTPUT_VARIABLE BOOST_BOOTSTRAP_OUT
                     ERROR_VARIABLE BOOST_BOOTSTRAP_OUT
