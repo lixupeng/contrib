@@ -113,9 +113,9 @@ endif()
 
 PROJECT("OpenMS_CONTRIB")
 
-## Heart of the BUILD system : only edit when you know what you are doing (we don't)
-## quick manual for most commands: http://www.cmake.org/cmake/help/cmake2.6docs.html
-## useful predefined variables: http://www.paraview.org/Wiki/CMake_Useful_Variables
+# Heart of the BUILD system : only edit when you know what you are doing (we don't)
+# quick manual for most commands: http://www.cmake.org/cmake/help/cmake2.6docs.html
+# useful predefined variables: http://www.paraview.org/Wiki/CMake_Useful_Variables
 
 cmake_minimum_required(VERSION 2.8.3 FATAL_ERROR)
 SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
