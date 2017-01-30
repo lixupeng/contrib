@@ -54,8 +54,13 @@ macro(validate_archive libname)
   file(SHA1 ${_target_file} _downloaded_sha1 )
   if(NOT "${_downloaded_sha1}" STREQUAL "${_target_sha1}")
     file(REMOVE ${_target_file})
-    message(STATUS "Validating archive for ${libname} .. sha1 mismatch (expected: ${_target_sha1} got: ${_downloaded_sha1})")
-    message(STATUS "The archive file for ${libname} seems to be damaged and will be removed.")
+    if("${_downloaded_sha1}" STREQUAL "da39a3ee5e6b4b0d3255bfef95601890afd80709")
+      message(STATUS "Validating archive for ${libname} .. Found empty archive.")
+      message(STATUS "Check your internet connection.")
+    else()
+      message(STATUS "Validating archive for ${libname} .. sha1 mismatch (expected: ${_target_sha1} got: ${_downloaded_sha1})")
+      message(STATUS "The archive file for ${libname} seems to be damaged and will be removed.")
+    endif()
     message(STATUS "Please try to rebuild ${libname} to trigger a new download of the archive.")
     message(STATUS "If this fails again, please contact the OpenMS support.")
     message(FATAL_ERROR "Abort!")
@@ -69,7 +74,9 @@ endmacro()
 ## @param libname The libary that should be downloaded
 macro(download_contrib_archive libname)
   # constant
-  set(_BASE_URL "http://github.com/OpenMS/contrib-sources/raw/master/")
+  # Currently this points to an FTP at FU Berlin
+  # Sources are checked out regularly from OpenMS/contrib-sources via a cron job
+  set(_BASE_URL "http://ftp.mi.fu-berlin.de/pub/OpenMS/contrib-sources/")
 
   # the files/folders where downloads are stored
   set(_archive_folder "${PROJECT_BINARY_DIR}/archives")
@@ -183,10 +190,10 @@ MACRO ( OPENMS_BUILDLIB libname solutionfile_varname target_varname config worki
 
   find_program(MSBUILD_EXECUTABLE MSBuild)
   if (MSBUILD_EXECUTABLE)
-    message(STATUS "Finding MSBuild.exe (usually installed along with .NET) ... success")
+    message(STATUS "Finding MSBuild.exe (usually installed along with .NET or VS [since 12] ) ... success")
   else()
-    message(STATUS "Finding MSBuild.exe (usually installed along with .NET) ... failed")
-    message(STATUS "\n\nPlease install Microsoft .NET (3.5 or above) and/or make sure MSBuild.exe is in your PATH!\n\n")
+    message(STATUS "Finding MSBuild.exe (usually installed along with .NET or VS [since 12]) ... failed")
+    message(STATUS "\n\nIf not shipped with your Visual Studio version (e.g. <12), please install Microsoft .NET (3.5 or above) and/or make sure MSBuild.exe is in your PATH!\n\n")
     message(FATAL_ERROR ${MSBUILD_EXECUTABLE})
   endif()
   exec_program(MSBuild ${${workingdir_varname}}

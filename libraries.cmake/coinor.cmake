@@ -20,9 +20,9 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
 		## - changed used runtime library to dynamic version (Release & Debug mode)
 		## - deleted contents of CoinMP-1.3.3\CoinMP\MSVisualStudio\v8\release (there were precompiled dll's and lib's)
 
-    set(PATCH_FILE "${PATCH_DIR}/coinor/CoinLpIO.diff")
-    set(PATCHED_FILE "${COINOR_DIR}/CoinUtils/src/CoinLpIO.cpp")
-    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+    # set(PATCH_FILE "${PATCH_DIR}/coinor/CoinLpIO.diff")
+    # set(PATCHED_FILE "${COINOR_DIR}/CoinUtils/src/CoinLpIO.cpp")
+    # OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
 	
     set(MSBUILD_ARGS_SLN "${COINOR_DIR}/CoinMP/MSVisualStudio/v${CONTRIB_MSVC_VERSION}/CoinMP.sln")
     set(MSBUILD_ARGS_TARGET "libCbc")
@@ -76,19 +76,27 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
 		endforeach()		
 
 	else()  ## LINUX & Mac
-    set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/CbcEventHandler.hpp.diff")
-    set(PATCHED_FILE "${COINOR_DIR}/Cbc/src/CbcEventHandler.hpp")
-    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+    #set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/CbcEventHandler.hpp.diff")
+    #set(PATCHED_FILE "${COINOR_DIR}/Cbc/src/CbcEventHandler.hpp")
+    #OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
 
-    set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/CoinTypes.hpp.diff")
-    set(PATCHED_FILE "${COINOR_DIR}/CoinUtils/src/CoinTypes.hpp")
-    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)	  
+    #set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/CoinTypes.hpp.diff")
+    #set(PATCHED_FILE "${COINOR_DIR}/CoinUtils/src/CoinTypes.hpp")
+    #OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+
+    # set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/Makefile.in.diff")
+    # set(PATCHED_FILE "${COINOR_DIR}/Makefile.in")
+    # OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+
+    # set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/MakefileCoinMP.in.diff")
+    # set(PATCHED_FILE "${COINOR_DIR}/CoinMP/Makefile.in")
+    # OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)  
   
     # configure -- 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-      set(COINOR_EXTRA_FLAGS "CFLAGS='${CXX_OSX_FLAGS}' CXXFLAGS='${CXX_OSX_FLAGS} -fPIC' --disable-dependency-tracking")
+      set(COINOR_EXTRA_FLAGS "ADD_FFLAGS='${OSX_DEPLOYMENT_FLAG}' ADD_CFLAGS='${OSX_DEPLOYMENT_FLAG}' ADD_CXXFLAGS='${OSX_LIB_FLAG} ${OSX_DEPLOYMENT_FLAG} -fPIC' --disable-dependency-tracking")
     else()
-      set(COINOR_EXTRA_FLAGS "CXXFLAGS='-fPIC'")
+      set(COINOR_EXTRA_FLAGS "ADD_CXXFLAGS='-fPIC'")
     endif()    
 
 		# check if we prefer shared or static libs
@@ -100,12 +108,15 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
 			set(SHARED_BUILD "--enable-shared=no")		
 		endif()
 		
-    message( STATUS "Configure COIN-OR library (./configure -C --libdir=${CONTRIB_BIN_LIB_DIR} --includedir=${CONTRIB_BIN_INCLUDE_DIR} ${COINOR_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER})")
+    message( STATUS "Configure COIN-OR library (./configure -C --prefix=${PROJECT_BINARY_DIR} ${STATIC_BUILD} ${SHARED_BUILD} --with-lapack=no --with-blas=no ${COINOR_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER})")
     exec_program("./configure" "${COINOR_DIR}"
       ARGS 
       -C 
-      --libdir=${CONTRIB_BIN_LIB_DIR} 
-      --includedir=${CONTRIB_BIN_INCLUDE_DIR}
+      --prefix=${PROJECT_BINARY_DIR}
+      ## Following two lines can be combined with prefix
+      ## But maybe they avoid building the doc into share (wanted?)
+      #--libdir=${CONTRIB_BIN_LIB_DIR} 
+      #--includedir=${CONTRIB_BIN_INCLUDE_DIR}
       ${STATIC_BUILD}
       ${SHARED_BUILD}
       --with-lapack=no
@@ -121,16 +132,19 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
     file(APPEND ${LOGFILE} ${COINOR_CONFIGURE_OUT})
 
     if( NOT COINOR_CONFIGURE_SUCCESS EQUAL 0)
-      message( STATUS "Configure COIN-OR library (./configure -C --libdir=${CONTRIB_BIN_LIB_DIR} --includedir=${CONTRIB_BIN_INCLUDE_DIR} ${COINOR_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. failed")
+      message( STATUS "Configure COIN-OR library (./configure -C --prefix=${PROJECT_BINARY_DIR} ${STATIC_BUILD} ${SHARED_BUILD} --with-lapack=no --with-blas=no ${COINOR_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. failed")
       message( FATAL_ERROR ${COINOR_CONFIGURE_OUT})
     else()
-      message( STATUS "Configure COIN-OR library (./configure -C --libdir=${CONTRIB_BIN_LIB_DIR} --includedir=${CONTRIB_BIN_INCLUDE_DIR} ${COINOR_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. done")
+      message( STATUS "Configure COIN-OR library (./configure -C --prefix=${PROJECT_BINARY_DIR} ${STATIC_BUILD} ${SHARED_BUILD} --with-lapack=no --with-blas=no ${COINOR_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. done")
     endif()
 
-    ## make 
-    message( STATUS "Building COIN-OR library (make).. ")
+    ## make install
+    message( STATUS "Building and installing COIN-OR library (make install).. ")
     exec_program(${CMAKE_MAKE_PROGRAM} "${COINOR_DIR}"
-      ARGS -j ${NUMBER_OF_JOBS}
+      ARGS 
+      install
+      #-j ${NUMBER_OF_JOBS} # the project has problems with multiple jobs. It tries to create folders at the same time and fails.
+      -j 1
       OUTPUT_VARIABLE COINOR_MAKE_OUT
       RETURN_VALUE COINOR_MAKE_SUCCESS
       )
@@ -139,29 +153,10 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
     file(APPEND ${LOGFILE} ${COINOR_MAKE_OUT})
 
     if( NOT COINOR_MAKE_SUCCESS EQUAL 0)
-      message( STATUS "Building COIN-OR library (make) .. failed")
+      message( STATUS "Building and installing COIN-OR library (make install) .. failed")
       message( FATAL_ERROR ${COINOR_MAKE_OUT})
     else()
-      message( STATUS "Building COIN-OR library (make) .. done")
-    endif()
-    
-    ## make install
-    message( STATUS "Installing COIN-OR library (make install) .. ")
-    exec_program(${CMAKE_MAKE_PROGRAM} "${COINOR_DIR}"
-      ARGS "install"
-      -j ${NUMBER_OF_JOBS}
-      OUTPUT_VARIABLE COINOR_INSTALL_OUT
-      RETURN_VALUE COINOR_INSTALL_SUCCESS
-      )
-    
-    ## logfile
-    file(APPEND ${LOGFILE} ${COINOR_INSTALL_OUT})
-
-    if( NOT COINOR_INSTALL_SUCCESS EQUAL 0)
-      message( STATUS "Installing COIN-OR library (make install) .. failed")
-      message( FATAL_ERROR ${COINOR_INSTALL_OUT})
-    else()
-      message( STATUS "Installing COIN-OR library (make install) .. done")      
+      message( STATUS "Building and installing COIN-OR library (make install) .. done")
     endif()
   endif()
 

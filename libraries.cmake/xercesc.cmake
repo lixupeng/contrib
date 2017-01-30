@@ -40,20 +40,21 @@ MACRO( OPENMS_CONTRIB_BUILD_XERCESC )
 
   else() # THE UNIX WAY
     
-		# configure -- 
+    # configure
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-      set(XERCESC_EXTRA_FLAGS "--disable-dependency-tracking CFLAGS='${CXX_OSX_FLAGS}' CXXFLAGS='${CXX_OSX_FLAGS}'")
-    endif( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+      set(XERCESC_EXTRA_FLAGS "--enable-transcoder-macosunicodeconverter --enable-transcoder-gnuiconv --enable-transcoder-iconv --disable-dependency-tracking CFLAGS='${OSX_DEPLOYMENT_FLAG} ${OSX_SYSROOT_FLAG}' CXXFLAGS='${OSX_DEPLOYMENT_FLAG} ${OSX_SYSROOT_FLAG} ${OSX_LIB_FLAG}'")
+    else()
+      set(XERCESC_EXTRA_FLAGS "--enable-transcoder-gnuiconv --enable-transcoder-iconv")
+    endif()
 
-    message( STATUS "Configuring XERCES-C library (./configure --prefix ${CMAKE_BINARY_DIR} --disable-network --disable-transcoder-iconv --disable-transcoder-icu --disable-shared --with-pic ${XERCESC_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. ")
+    message( STATUS "Configuring XERCES-C library (./configure --prefix ${CMAKE_BINARY_DIR} --disable-network --disable-transcoder-icu --disable-shared --with-pic ${XERCESC_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. ")
     exec_program("./configure" "${XERCES_DIR}"
       ARGS
       --prefix ${CMAKE_BINARY_DIR}
       --disable-network
       --with-pic
-      --disable-transcoder-iconv
       --disable-transcoder-icu
-			--disable-shared
+      --disable-shared
       ${XERCESC_EXTRA_FLAGS}
       CXX=${CMAKE_CXX_COMPILER}
       CC=${CMAKE_C_COMPILER}
@@ -65,10 +66,10 @@ MACRO( OPENMS_CONTRIB_BUILD_XERCESC )
     file(APPEND ${LOGFILE} ${XERCESC_CONFIGURE_OUT})
 
     if( NOT XERCESC_CONFIGURE_SUCCESS EQUAL 0)
-      message( STATUS "Configuring XERCES-C library (./configure --prefix ${CMAKE_BINARY_DIR} --disable-network ${XERCESC_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. failed")
+      message( STATUS "Configuring XERCES-C library (./configure --prefix ${CMAKE_BINARY_DIR} --disable-network --disable-transcoder-icu --disable-shared --with-pic ${XERCESC_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. failed")
       message( FATAL_ERROR ${XERCESC_CONFIGURE_OUT})
     else()
-      message( STATUS "Configuring XERCES-C library (./configure --prefix ${CMAKE_BINARY_DIR} --disable-network ${XERCESC_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. done")
+      message( STATUS "Configuring XERCES-C library (./configure --prefix ${CMAKE_BINARY_DIR} --disable-network --disable-transcoder-icu --disable-shared --with-pic ${XERCESC_EXTRA_FLAGS} CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}) .. done")
     endif()
 
     # make 

@@ -95,7 +95,7 @@
 
 # Determine what to build (all or single library)
 set( BUILD_TYPE LIST CACHE STRING "Can be used to restrict building to a single library: ALL,SEQAN,LIBSVM,XERCESC,BOOST,GSL,COINOR,BZIP2,ZLIB,GLPK")
-set( VALID_BUILD_TYPES "ALL" "SEQAN" "LIBSVM" "XERCESC" "BOOST" "GSL" "COINOR" "BZIP2" "ZLIB" "GLPK" "EIGEN" "WILDMAGIC")
+set( VALID_BUILD_TYPES "ALL" "SEQAN" "LIBSVM" "XERCESC" "BOOST" "COINOR" "BZIP2" "ZLIB" "GLPK" "EIGEN" "WILDMAGIC")
 # check build type
 if (BUILD_TYPE STREQUAL "HELP" OR BUILD_TYPE STREQUAL "LIST")
   message(STATUS "===========================================================================")
@@ -148,20 +148,19 @@ set (PATCH_DIR "${PROJECT_SOURCE_DIR}/patches/" CACHE STRING "Directory containi
 # project specific source directories
 ## Warning: ensure these are all upper-case names!
 set(BZIP2_DIR ${CONTRIB_BIN_SOURCE_DIR}/bzip2-1.0.5)
-set(ZLIB_DIR ${CONTRIB_BIN_SOURCE_DIR}/zlib-1.2.5)
-set(BOOST_DIR ${CONTRIB_BIN_SOURCE_DIR}/boost_1_52_0)
+set(ZLIB_DIR ${CONTRIB_BIN_SOURCE_DIR}/zlib-1.2.8)
+set(BOOST_DIR ${CONTRIB_BIN_SOURCE_DIR}/boost_1_61_0)
 set(XERCES_DIR ${CONTRIB_BIN_SOURCE_DIR}/xerces-c-3.1.1)
-set(GSL_DIR ${CONTRIB_BIN_SOURCE_DIR}/gsl-1.13)
 set(LIBSVM_DIR ${CONTRIB_BIN_SOURCE_DIR}/libsvm-3.12)
 set(SEQAN_DIR ${CONTRIB_BIN_SOURCE_DIR}/seqan-1.4.1)
 set(GLPK_DIR ${CONTRIB_BIN_SOURCE_DIR}/glpk-4.46)
-set(COINOR_DIR ${CONTRIB_BIN_SOURCE_DIR}/CoinMP-1.3.3)
-set(EIGEN_DIR ${CONTRIB_BIN_SOURCE_DIR}/eigen-eigen-ffa86ffb5570)
+set(COINOR_DIR ${CONTRIB_BIN_SOURCE_DIR}/CoinMP-1.8.3)
+set(EIGEN_DIR ${CONTRIB_BIN_SOURCE_DIR}/eigen-eigen-491bc9c5a46b)
 set(WILDMAGIC_DIR ${CONTRIB_BIN_SOURCE_DIR}/WildMagic5)
 
 ## source(archive) paths
 ## PLEASE upload all source archives to
-##     https://sourceforge.net/projects/open-ms/files/contrib/
+##     http://ftp.mi.fu-berlin.de/pub/OpenMS/contrib-sources/
 ## and provide the necessary information below
 ##  ARCHIVE_<LIBNAME> the name of the archive as it was uploaded
 ##  ARCHIVE_<LIBNAME>_TAR the name of the tar in the tar.gz
@@ -177,22 +176,26 @@ set(ARCHIVE_BZIP2 bzip2-1.0.5.tar.gz)
 set(ARCHIVE_BZIP2_TAR bzip2-1.0.5.tar)
 set(ARCHIVE_BZIP2_SHA1 "8b02713ea0c8eb501cc8bdac4432d7f29700f767")
 
-set(ARCHIVE_ZLIB zlib-1.2.5.tar.gz)
-set(ARCHIVE_ZLIB_TAR  zlib-1.2.5.tar)
-set(ARCHIVE_ZLIB_SHA1 "8e8b93fa5eb80df1afe5422309dca42964562d7e")
+# set(ARCHIVE_ZLIB zlib-1.2.5.tar.gz)
+# set(ARCHIVE_ZLIB_TAR  zlib-1.2.5.tar)
+# set(ARCHIVE_ZLIB_SHA1 "8e8b93fa5eb80df1afe5422309dca42964562d7e")
 
-set(ARCHIVE_BOOST boost_1_52_0.tar.gz)
-set(ARCHIVE_BOOST_TAR  boost_1_52_0.tar)
-set(ARCHIVE_BOOST_SHA1 "7cddbfd33fc99ed69343cd5cf8461648f8eae75a")
+set(ARCHIVE_ZLIB zlib-1.2.8.tar.gz)
+set(ARCHIVE_ZLIB_TAR  zlib-1.2.8.tar)
+set(ARCHIVE_ZLIB_SHA1 "a4d316c404ff54ca545ea71a27af7dbc29817088")
 
-set(ARCHIVE_XERCES xerces-c-3.1.1.tar.gz)
+# set(ARCHIVE_BOOST boost_1_52_0.tar.gz)
+# set(ARCHIVE_BOOST_TAR  boost_1_52_0.tar)
+# set(ARCHIVE_BOOST_SHA1 "7cddbfd33fc99ed69343cd5cf8461648f8eae75a")
+
+set(ARCHIVE_BOOST boost_1_61_0.tar.gz)
+set(ARCHIVE_BOOST_TAR  boost_1_61_0.tar)
+set(ARCHIVE_BOOST_SHA1 "2d2b80771f584f327827193fcf3abf836edcdfaa")
+
+set(ARCHIVE_XERCES xerces-c-3.1.1-vs15.tar.gz)
 set(ARCHIVE_XERCES_TAR  xerces-c-3.1.1.tar)
-set(ARCHIVE_XERCES_SHA1 "1f9b1bf419526dbaa8d2aff177a5048ca66093cb")
-
-set(ARCHIVE_GSL gsl-1.13.tar.gz)
-set(ARCHIVE_GSL_TAR  gsl-1.13.tar)
-set(ARCHIVE_GSL_SHA1 "704845d46d4a1fd807543a42a58b3fb17f13dfaa")
-
+set(ARCHIVE_XERCES_SHA1 "9ec2c6993a9c72b73b2819b2ad33856ad39089d9")
+ 
 set(ARCHIVE_LIBSVM libsvm-3.12.tar.gz)
 set(ARCHIVE_LIBSVM_TAR  libsvm-3.12.tar)
 set(ARCHIVE_LIBSVM_SHA1 "6ee77eb3d89af07fe48058dba0dcc24c85020b85")
@@ -205,13 +208,17 @@ set(ARCHIVE_GLPK glpk-4.46.tar.gz)
 set(ARCHIVE_GLPK_TAR  glpk-4.46.tar)
 set(ARCHIVE_GLPK_SHA1 "73d589452dc1d8d6a784b3f86f4268cae37420d7")
 
-set(ARCHIVE_COINOR CoinMP-1.3.3.tar.gz)
-set(ARCHIVE_COINOR_TAR  CoinMP-1.3.3.tar)
-set(ARCHIVE_COINOR_SHA1 "28d29dae6abf6cdef027dcfa4961bb10b7f540cb")
+#set(ARCHIVE_COINOR CoinMP-1.3.3.tar.gz)
+#set(ARCHIVE_COINOR_TAR  CoinMP-1.3.3.tar)
+#set(ARCHIVE_COINOR_SHA1 "28d29dae6abf6cdef027dcfa4961bb10b7f540cb")
 
-set(ARCHIVE_EIGEN eigen-3.2.0.tar.gz)
-set(ARCHIVE_EIGEN_TAR  eigen-3.2.0.tar)
-set(ARCHIVE_EIGEN_SHA1 "7134378dd56608f67dd66ff6d5a2dfb077ef52a4")
+set(ARCHIVE_COINOR CoinMP-1.8.3.tar.gz)
+set(ARCHIVE_COINOR_TAR  CoinMP-1.8.3.tar)
+set(ARCHIVE_COINOR_SHA1 "e8b0e4e2fe8a0e3fa29744b9dfd7b1c5c0954451")
+
+set(ARCHIVE_EIGEN eigen-3.2.10.tar.gz)
+set(ARCHIVE_EIGEN_TAR  eigen-3.2.10.tar)
+set(ARCHIVE_EIGEN_SHA1 "bb1d964f1fb11d6ae173010f33b971f93a631144")
 
 set(ARCHIVE_WILDMAGIC WildMagic5.tar.gz)
 set(ARCHIVE_WILDMAGIC_TAR  WildMagic5.tar)
@@ -220,7 +227,6 @@ set(ARCHIVE_WILDMAGIC_SHA1 "e30b6f7f955c640dadfea09385a0a0ddec5b2997")
 ## necessary for clean up .. change if install process of library changes
 set(INCLUDE_DIR_BOOST ${CONTRIB_BIN_INCLUDE_DIR}/boost)
 set(INCLUDE_DIR_XERCES ${CONTRIB_BIN_INCLUDE_DIR}/xercesc)
-set(INCLUDE_DIR_GSL ${CONTRIB_BIN_INCLUDE_DIR}/gsl)
 set(INCLUDE_DIR_SEQAN ${CONTRIB_BIN_INCLUDE_DIR}/seqan)
 set(INCLUDE_DIR_GLPK ${CONTRIB_BIN_INCLUDE_DIR}/GLPK)
 set(INCLUDE_DIR_COINOR ${CONTRIB_BIN_INCLUDE_DIR}/coin)
@@ -248,6 +254,7 @@ set(LOGFILE "${PROJECT_BINARY_DIR}/contrib_build.log")
 
 if (MSVC)
   ## guess MSVC Version (we need this in order to correctly guess the names of the VS solution targets.
+  ## Since CMake 3.0 you can use the years (e.g. 2013) for every VS version. For VS 8 and 9 you have to use the year!
   if (CMAKE_GENERATOR MATCHES ".*Visual Studio 8 2005.*")
     set(TMP_MSVC_VERSION "8")
   elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 9 2008.*")
@@ -258,8 +265,10 @@ if (MSVC)
     set(TMP_MSVC_VERSION "11")
   elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 12.*")
     set(TMP_MSVC_VERSION "12")
+  elseif (CMAKE_GENERATOR MATCHES ".*Visual Studio 14.*")
+    set(TMP_MSVC_VERSION "14")
   else()
-    message(FATAL_ERROR "Please use 'Visual Studio ?? [Win64]' (??={8 2005, 9 2008, 10, 11, 12}) as Generator - identical to the MSVC toolchain you plan to use for OpenMS! Note that you must not use NMake or alike for the contrib (nor for OpenMS). There will be errors (mostly missing libraries).")
+    message(FATAL_ERROR "Please use 'Visual Studio ?? [Win64]' (??={8 2005, 9 2008, 10, 11, 12, 14}) as Generator - identical to the MSVC toolchain you plan to use for OpenMS! Note that you must not use NMake or alike for the contrib (nor for OpenMS). There will be errors (mostly missing libraries).")
   endif()
   set(CONTRIB_MSVC_VERSION ${TMP_MSVC_VERSION} CACHE INTERNAL "Microsoft Visual Studio Version used. Valid values: 8 and above")
   ## parameter validity check
@@ -325,15 +334,6 @@ else() ## linux/Mingw/macos
 
 endif()
 
-# see if we use GNU CXX/CC -- this one is required for CGAL etc.
-# TODO: check if this one is really working
-#if(NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCXX)
-#  message(FATAL_ERROR "Please specify the GNU CXX (g++) as C++ compiler")
-#elseif(NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCC)
-#  message(FATAL_ERROR "Please specify the GNU C (gcc) as C compiler")
-#endif()
-
-
 ## prepare
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 file(MAKE_DIRECTORY "${CONTRIB_BIN_SOURCE_DIR}")
@@ -350,7 +350,6 @@ include ("${CMAKE_SOURCE_DIR}/libraries.cmake/seqan.cmake")
 include ("${CMAKE_SOURCE_DIR}/libraries.cmake/libsvm.cmake")
 include ("${CMAKE_SOURCE_DIR}/libraries.cmake/xercesc.cmake")
 include ("${CMAKE_SOURCE_DIR}/libraries.cmake/boost.cmake")
-include ("${CMAKE_SOURCE_DIR}/libraries.cmake/gsl.cmake")
 include ("${CMAKE_SOURCE_DIR}/libraries.cmake/glpk.cmake")
 include ("${CMAKE_SOURCE_DIR}/libraries.cmake/bzip2.cmake")
 include ("${CMAKE_SOURCE_DIR}/libraries.cmake/zlib.cmake")
@@ -360,23 +359,30 @@ include ("${CMAKE_SOURCE_DIR}/libraries.cmake/wildmagic.cmake")
 
 ## build mac os x specific C/C++ flags
 set( OPENMS_CONTRIB_MACOSX_MIXED_MODE 0 CACHE INTERNAL "building multiple architectures on MacOSX" FORCE)
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(CXX_OSX_FLAGS "-mmacosx-version-min=10.6")
-  message(STATUS "Using custom OS X architecture flags for CXX compiler: \"${CXX_OSX_FLAGS}\"")
-  file(APPEND ${LOGFILE} "Using custom OS X architecture flags for CXX compiler: \"${CXX_OSX_FLAGS}\"\n\r")
-
-  # check ich c++ is used; if, switch to g++ for some strange
-  # incompatibility reasons
-  if (${CMAKE_CXX_COMPILER} MATCHES "/c[+][+]")
-    set(MACOSX_COMPILER ${CMAKE_CXX_COMPILER})
-    string(REPLACE "c++" "g++" MACOSX_FIXED_COMPILER ${MACOSX_COMPILER})
-    message(WARNING "Using '${CMAKE_CXX_COMPILER}' may cause problems, automatically replacing by '${MACOSX_FIXED_COMPILER}'!")
-    set(CMAKE_CXX_COMPILER ${MACOSX_FIXED_COMPILER} CACHE INTERNAL "Forcing '${CMAKE_CXX_COMPILER}' compiler (replacing '${CMAKE_CXX_COMPILER}' compiler)." FORCE)
+if(APPLE)
+  if( CMAKE_OSX_DEPLOYMENT_TARGET )
+  message(STATUS "Deployment target for OSX was set to ${CMAKE_OSX_DEPLOYMENT_TARGET}. Adding the following flags whenever possible/needed:\n\r")
+    set( OSX_DEPLOYMENT_TARGET_STRING "macosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    set( OSX_DEPLOYMENT_FLAG "-m${OSX_DEPLOYMENT_TARGET_STRING}")
+    if( NOT (${CMAKE_SYSTEM_VERSION} LESS 13))
+      ## Later than OSX 10.9 when they switched to libc++ as standard library
+      set( OSX_LIB_FLAG "-stdlib=libc++")
+    else()
+      set( OSX_LIB_FLAG "-stdlib=libstdc++")
+    endif()
+    message(STATUS "${OSX_DEPLOYMENT_FLAG} ${OSX_LIB_FLAG}")
+  endif()
+  
+  if( CMAKE_OSX_SYSROOT )
+    message(STATUS "Sysroot for OSX was set to ${CMAKE_OSX_SYSROOT}. Adding the following flags whenever possible/needed:\n\r")
+    set( OSX_SYSROOT_STRING "sysroot=${CMAKE_OSX_SYSROOT}")
+    set( OSX_SYSROOT_FLAG "--${OSX_SYSROOT_STRING}")
+    message(STATUS "${OSX_SYSROOT_FLAG}")
   endif()
 
   # force cmake > 2.8.1 to avoid bugs with OSX_DEPLOYMENT_TARGET
   cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+endif()
 
 list(FIND VALID_BUILD_TYPES ${BUILD_TYPE} list_pos)
 if( ${list_pos} EQUAL -1 )
@@ -457,16 +463,6 @@ if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "BOOST")
   OPENMS_CONTRIB_BUILD_BOOST()
 endif()
 
-##################################################
-###       GSL                                  ###
-##################################################
-
-if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "GSL")
-  OPENMS_CLEAN_LIB("GSL")
-  OPENMS_CONTRIB_BUILD_GSL()
-  OPENMS_COPY_LIBS("GSL")
-endif()
-
 
 ##################################################
 ###       GLPK                                 ###
@@ -509,7 +505,7 @@ if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "WILDMAGIC")
 endif()
 
 ## finally copy README.txt to project-binary directory to mark process complete
-configure_file("${PROJECT_SOURCE_DIR}/README.md" "${PROJECT_BINARY_DIR}/README_contrib1.7.txt"  COPYONLY)
+configure_file("${PROJECT_SOURCE_DIR}/README.md" "${PROJECT_BINARY_DIR}/README_contrib.txt"  COPYONLY)
 
 message(STATUS "")
 message(STATUS "")
