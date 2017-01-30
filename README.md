@@ -28,3 +28,6 @@ external libraries should be built (depending on your system, you might already
 have some of them installed and may not want to re-install them). 
 CMake will then download the requested libraries and compile them for you.
 
+Note(s)
+============
+Note that in case you do a partial build, it is wise to install BZIP2 and ZLIB first, since other libraries (e.g. BOOST) depend on it.
