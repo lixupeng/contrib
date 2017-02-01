@@ -19,7 +19,7 @@ MACRO( OPENMS_CONTRIB_BUILD_GLPK )
 		configure_file("${PROJECT_SOURCE_DIR}/patches/gplk/Win_config_VC" "${GLPK_DIR}/w32/config.h" COPYONLY)
 		configure_file("${PROJECT_SOURCE_DIR}/patches/gplk/Makefile_VC" "${GLPK_DIR}/w32/Makefile_VC" COPYONLY)
 		
-	  exec_program(nmake "${GLPK_DIR}/w32"  ## w32 and w64 contain the same makefiles, so it does not matter (the cmd environment we are using to call nmake matters though)
+	  exec_program(${NMAKE_EXECUTABLE} "${GLPK_DIR}/w32"  ## w32 and w64 contain the same makefiles, so it does not matter (the cmd environment we are using to call nmake matters though)
 	    ARGS /f Makefile_VC DEBUG=1 check
       OUTPUT_VARIABLE GLPK_MAKE_OUT
 	    RETURN_VALUE BUILD_SUCCESS)
@@ -34,7 +34,7 @@ MACRO( OPENMS_CONTRIB_BUILD_GLPK )
       message(STATUS "Building GLPK library (nmake) .. done")
 	  endif()
 
-	  exec_program(nmake "${GLPK_DIR}/w32"  ## w32 and w64 contain the same makefiles, so it does not matter (the cmd environment we are using to call nmake matters though)
+	  exec_program(${NMAKE_EXECUTABLE} "${GLPK_DIR}/w32"  ## w32 and w64 contain the same makefiles, so it does not matter (the cmd environment we are using to call nmake matters though)
 	    ARGS /f Makefile_VC check
       OUTPUT_VARIABLE GLPK_MAKE_OUT
 	    RETURN_VALUE BUILD_SUCCESS)
