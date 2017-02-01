@@ -289,7 +289,7 @@ if (MSVC)
   endif()
 
   ## http://gnuwin32.sourceforge.net/packages/patch.htm
-  find_program(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin")
+  find_program(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin" "${PROJECT_SOURCE_DIR}/tools")
   if (NOT PROGRAM_PATCH)
     message(FATAL_ERROR "Cannot find 'patch.exe' on your system. Please install gnuwin32-patch and add the directory to your PATH environment variable!")
   endif()
