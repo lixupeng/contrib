@@ -289,11 +289,31 @@ if (MSVC)
   endif()
 
   ## http://gnuwin32.sourceforge.net/packages/patch.htm
-  find_program(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin")
+  find_program(PROGRAM_PATCH "patch.exe" PATHS "C:/Program Files/gnuwin32/bin" "C:/Program Files/patch/bin" "${PROJECT_SOURCE_DIR}/tools")
   if (NOT PROGRAM_PATCH)
     message(FATAL_ERROR "Cannot find 'patch.exe' on your system. Please install gnuwin32-patch and add the directory to your PATH environment variable!")
   endif()
 
+  find_program(MSBUILD_EXECUTABLE MSBuild PATHS "C:/Program Files (x86)/MSBuild/${CONTRIB_MSVC_VERSION}.0/Bin/")
+  if (MSBUILD_EXECUTABLE)
+    message(STATUS "Finding MSBuild.exe (usually installed along with .NET or VS [since 12] ) ... success")
+  else()
+    message(STATUS "Finding MSBuild.exe (usually installed along with .NET or VS [since 12]) ... failed")
+    message(STATUS "\n\nIf not shipped with your Visual Studio version (e.g. <12), please install Microsoft .NET (3.5 or above) and/or make sure MSBuild.exe is in your PATH!\n")
+	message(STATUS "More recent versions of Visual Studio will install MSBuild in its own directory, e.g. 'C:\Program Files (x86)\MSBuild\${CONTRIB_MSVC_VERSION}.0\Bin\'. We looked there, but maybe it's slightly different...\n")
+    message(FATAL_ERROR ${MSBUILD_EXECUTABLE})
+  endif()
+  
+  ## just check if nmake is present -- if not later package calls will fail
+  find_program(NMAKE_EXECUTABLE nmake.exe)
+  if (NMAKE_EXECUTABLE)
+    message(STATUS "Finding nmake.exe (as part of VS) ... success")
+  else()
+    message(STATUS "Finding nmake.exe (usually installed along with VS ... failed")
+    message(STATUS "\n\nAre you sure you are using a VS developer(!) command line (which has more entries in %PATH%) and not just a normal command line?\n")
+    message(FATAL_ERROR ${NMAKE_EXECUTABLE})
+  endif()
+  
 else() ## linux/Mingw/macos
   # tar
   find_program(PROGRAM_ZIP "tar")
