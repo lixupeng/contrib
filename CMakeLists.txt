@@ -86,7 +86,7 @@
 
 ## required software:
 ## Windows: 7-Zip & GNUWin32-patch
-## Linux&MinGW: Tar & patch
+## Linux & MinGW: Tar & patch
 ## (these are searched for and an appropriate error message is given when not found)
 
 
@@ -532,7 +532,7 @@ if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "WILDMAGIC")
 endif()
 
 ##################################################
-###       SQLIT                                ###
+###       SQLITE                               ###
 ##################################################
 
 if (BUILD_TYPE STREQUAL "ALL" OR BUILD_TYPE STREQUAL "SQLITE")
