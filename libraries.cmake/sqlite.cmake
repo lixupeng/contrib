@@ -1,8 +1,6 @@
 ##################################################
 ###       SQLITE   															 ###
 ##################################################
-## SQLITE from http://gnuwin32.sourceforge.net/packages/sqlite.htm
-## repacked installed files (deleting precompiled libraries) and created VisualStudio 2008 files
 
 MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
   OPENMS_LOGHEADER_LIBRARY("SQLITE")
@@ -15,34 +13,15 @@ MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
   OPENMS_SMARTEXTRACT(ZIP_ARGS ARCHIVE_SQLITE "SQLITE" "INSTALL")
   
   if(MSVC)
-    if (CONTRIB_MSVC_VERSION STREQUAL "12")
-      # patch config.h (for VS12 only, since math.h defines some functions which SQLITE re-defines otherwise)
-      set(PATCH_FILE "${PATCH_DIR}/sqlite/config.diff")
-      set(PATCHED_FILE "${SQLITE_DIR}/config.h")
-      OPENMS_PATCH( PATCH_FILE SQLITE_DIR PATCHED_FILE)
-    endif()	
-	  
-    ## we need to build sqlite-lib, sqlitecblas-lib in release and debug mode (=4 libs)
-    set(MSBUILD_ARGS_SLN "${SQLITE_DIR}/win32_VS${CONTRIB_MSVC_VERSION}/sqlite.sln")
     set(MSBUILD_ARGS_TARGET "sqlite")
     OPENMS_BUILDLIB("SQLITE (Debug)" MSBUILD_ARGS_SLN MSBUILD_ARGS_TARGET "Debug" SQLITE_DIR)
     OPENMS_BUILDLIB("SQLITE (Release)" MSBUILD_ARGS_SLN MSBUILD_ARGS_TARGET "Release" SQLITE_DIR)
-
-    set(MSBUILD_ARGS_TARGET "cblas")
-    OPENMS_BUILDLIB("SQLITE-cblas (Debug)" MSBUILD_ARGS_SLN MSBUILD_ARGS_TARGET "Debug" SQLITE_DIR)
-    OPENMS_BUILDLIB("SQLITE-cblas (Release)" MSBUILD_ARGS_SLN MSBUILD_ARGS_TARGET "Release" SQLITE_DIR)
-  
     ## copy includes
     set(dir_target ${PROJECT_BINARY_DIR}/include/sqlite)
     set(dir_source ${SQLITE_DIR}/win32_VS${CONTRIB_MSVC_VERSION}/include/sqlite)
     OPENMS_COPYDIR(dir_source dir_target)
 
   else()
-    # patch Makefile.in
-    set(PATCH_FILE "${PATCH_DIR}/sqlite/Makefile_in.diff")
-    set(PATCHED_FILE "${SQLITE_DIR}/Makefile.in")
-    OPENMS_PATCH( PATCH_FILE SQLITE_DIR PATCHED_FILE)
-
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
      set (SQLITE_CUSTOM_FLAGS "${CXX_OSX_FLAGS}")
     endif()
