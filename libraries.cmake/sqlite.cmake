@@ -35,6 +35,7 @@ MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
     
     configure_file(${SQLITE_DIR}/sqlite3.h ${PROJECT_BINARY_DIR}/include/sqlite/sqlite3.h COPYONLY)
     configure_file(${SQLITE_DIR}/sqlite3.dll ${PROJECT_BINARY_DIR}/lib/sqlite.dll COPYONLY)
+    configure_file(${SQLITE_DIR}/sqlite3.lib ${PROJECT_BINARY_DIR}/lib/sqlite.lib COPYONLY)
   else()
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
      set (SQLITE_CUSTOM_FLAGS "${CXX_OSX_FLAGS}")
