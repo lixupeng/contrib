@@ -1,5 +1,5 @@
 ##################################################
-###       SQLITE   															 ###
+###       SQLITE                               ###
 ##################################################
 
 MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
@@ -14,13 +14,27 @@ MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
   
   if(MSVC)
     set(MSBUILD_ARGS_TARGET "sqlite")
-    OPENMS_BUILDLIB("SQLITE (Debug)" MSBUILD_ARGS_SLN MSBUILD_ARGS_TARGET "Debug" SQLITE_DIR)
-    OPENMS_BUILDLIB("SQLITE (Release)" MSBUILD_ARGS_SLN MSBUILD_ARGS_TARGET "Release" SQLITE_DIR)
-    ## copy includes
-    set(dir_target ${PROJECT_BINARY_DIR}/include/sqlite)
-    set(dir_source ${SQLITE_DIR}/win32_VS${CONTRIB_MSVC_VERSION}/include/sqlite)
-    OPENMS_COPYDIR(dir_source dir_target)
 
+    message( STATUS "Configure SQLITE library using nmake ... in  ${SQLITE_DIR}")
+    execute_process(COMMAND ${NMAKE_EXECUTABLE}  /f ${SQLITE_DIR}/Makefile.msc
+                    WORKING_DIRECTORY "${SQLITE_DIR}"
+                    RESULT_VARIABLE _SQLITE_RES
+                    OUTPUT_VARIABLE _SQLITE_OUT
+                    ERROR_VARIABLE _SQLITE_ERR
+                    )
+    if (NOT _SQLITE_RES EQUAL 0)
+      message( STATUS "Configuring sqlite failed")
+      file(APPEND ${LOGFILE} "sqlite failed" )
+    else()
+      message( STATUS "Configuring sqlite worked")
+      file(APPEND ${LOGFILE} "sqlite worked" )
+    endif()
+    
+    file(APPEND ${LOGFILE} ${_SQLITE_ERR})
+    file(APPEND ${LOGFILE} ${_SQLITE_OUT})
+    
+    configure_file(${SQLITE_DIR}/sqlite3.h ${PROJECT_BINARY_DIR}/include/sqlite/sqlite3.h COPYONLY)
+    configure_file(${SQLITE_DIR}/sqlite3.dll ${PROJECT_BINARY_DIR}/lib/sqlite.dll COPYONLY)
   else()
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
      set (SQLITE_CUSTOM_FLAGS "${CXX_OSX_FLAGS}")
@@ -36,9 +50,9 @@ MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
       set(SHARED_BUILD "--enable-shared=yes")
     else()
       set(STATIC_BUILD "--enable-static=yes")
-      set(SHARED_BUILD "--enable-shared=no")		
+      set(SHARED_BUILD "--enable-shared=no")        
     endif()
-		
+        
     message( STATUS "Configure SQLITE library (./configure --prefix ${CMAKE_BINARY_DIR} --with-pic --disable-shared) .. ")
     exec_program("./configure" "${SQLITE_DIR}"
       ARGS
