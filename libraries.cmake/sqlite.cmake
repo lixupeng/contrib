@@ -13,6 +13,9 @@ MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
   OPENMS_SMARTEXTRACT(ZIP_ARGS ARCHIVE_SQLITE "SQLITE" "INSTALL")
   
   if(MSVC)
+    set(PATCH_FILE "${PATCH_DIR}sqlite/Makefile.msc.patch")
+    set(PATCHED_FILE "${SQLITE_DIR}/Makefile.msc")
+    OPENMS_PATCH( PATCH_FILE SQLITE_DIR PATCHED_FILE)
     set(MSBUILD_ARGS_TARGET "sqlite")
 
     message( STATUS "Configure SQLITE library using nmake ... in  ${SQLITE_DIR}")
