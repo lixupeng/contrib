@@ -13,23 +13,20 @@ MACRO( OPENMS_CONTRIB_BUILD_SQLITE )
   OPENMS_SMARTEXTRACT(ZIP_ARGS ARCHIVE_SQLITE "SQLITE" "INSTALL")
   
   if(MSVC)
-    set(PATCH_FILE "${PATCH_DIR}sqlite/Makefile.msc.patch")
-    set(PATCHED_FILE "${SQLITE_DIR}/Makefile.msc")
-    OPENMS_PATCH( PATCH_FILE SQLITE_DIR PATCHED_FILE)
-    set(MSBUILD_ARGS_TARGET "sqlite")
-
-    message( STATUS "Configure SQLITE library using nmake ... in  ${SQLITE_DIR}")
-    execute_process(COMMAND ${NMAKE_EXECUTABLE}  /f ${SQLITE_DIR}/Makefile.msc
+    message( STATUS "Building SQLITE library in  ${SQLITE_DIR}")
+	# there is a Makefile.am, but it uses (broken) .def export instead of just a simple call to cl. So we just use:
+    execute_process(COMMAND "cl" "sqlite3.c" "-DSQLITE_API=__declspec(dllexport)" "-link" "-dll" "-out:sqlite3.dll"
                     WORKING_DIRECTORY "${SQLITE_DIR}"
                     RESULT_VARIABLE _SQLITE_RES
                     OUTPUT_VARIABLE _SQLITE_OUT
                     ERROR_VARIABLE _SQLITE_ERR
                     )
     if (NOT _SQLITE_RES EQUAL 0)
-      message( STATUS "Configuring sqlite failed")
+      message( STATUS "Building sqlite failed")
       file(APPEND ${LOGFILE} "sqlite failed" )
+	  message( FATAL_ERROR ${_SQLITE_OUT})
     else()
-      message( STATUS "Configuring sqlite worked")
+      message( STATUS "Building sqlite worked")
       file(APPEND ${LOGFILE} "sqlite worked" )
     endif()
     
