@@ -3,9 +3,9 @@ OpenMS contributing libraries
 
 This directory contains the OpenMS contrib package.
 
-If you downloaded a stable release, detailed installation
-instructions and other information can be found in the
-documentation (`OpenMS/doc/index.html`).
+If you downloaded a stable release of OpenMS,
+detailed installation instructions and other information
+can be found in the documentation (`OpenMS/doc/index.html`).
 
 If this is a development version obtained via Git or as
 nightly snapshot, the documentation is not contained
