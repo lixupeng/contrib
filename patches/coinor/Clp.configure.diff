@@ -1,0 +1,20 @@
+--- Clp/configure.bck	2017-10-13 20:10:54.733967079 -0400
++++ Clp/configure	2017-10-13 20:11:06.613987770 -0400
+@@ -2887,7 +2887,7 @@
+           *-darwin*)
+             ;;
+           *)
+-            coin_warn_cflags="-pedantic-errors $coin_warn_cflags"
++            coin_warn_cflags=" $coin_warn_cflags"
+             ;;
+         esac
+     esac
+@@ -3756,7 +3756,7 @@
+           *-darwin*)
+             ;;
+           *)
+-            coin_warn_cxxflags="-pedantic-errors $coin_warn_cxxflags"
++            coin_warn_cxxflags=" $coin_warn_cxxflags"
+             ;;
+         esac
+     esac
