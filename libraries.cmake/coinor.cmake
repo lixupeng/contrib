@@ -99,6 +99,22 @@ MACRO( OPENMS_CONTRIB_BUILD_COINOR)
     set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/Clp.configure.diff")
     set(PATCHED_FILE "${COINOR_DIR}/Clp/configure")
     OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+
+    set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/Cgl.configure.diff")
+    set(PATCHED_FILE "${COINOR_DIR}/Cgl/configure")
+    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+
+    set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/CoinMP.configure.diff")
+    set(PATCHED_FILE "${COINOR_DIR}/CoinMP/configure")
+    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+
+    set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/Cbc.configure.diff")
+    set(PATCHED_FILE "${COINOR_DIR}/Cbc/configure")
+    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
+
+    set(PATCH_FILE "${PROJECT_SOURCE_DIR}/patches/coinor/Osi.configure.diff")
+    set(PATCHED_FILE "${COINOR_DIR}/Osi/configure")
+    OPENMS_PATCH( PATCH_FILE COINOR_DIR PATCHED_FILE)
   
     # configure -- 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
