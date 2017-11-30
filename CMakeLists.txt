@@ -384,6 +384,32 @@ file(WRITE ${LOGFILE} "-- Starting to build contrib --\n\r")
 file(APPEND ${LOGFILE} "CXX: ${CMAKE_CXX_COMPILER}\n\r")
 file(APPEND ${LOGFILE} "CC: ${CMAKE_C_COMPILER}\n\r")
 
+## macOS specifics.
+if(APPLE)
+  if( CMAKE_OSX_DEPLOYMENT_TARGET )
+  message(STATUS "Deployment target for OSX was set to ${CMAKE_OSX_DEPLOYMENT_TARGET}. Adding the following flags whenever possible/needed:\n\r")
+    set( OSX_DEPLOYMENT_TARGET_STRING "macosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    set( OSX_DEPLOYMENT_FLAG "-m${OSX_DEPLOYMENT_TARGET_STRING}")
+    if( NOT (${CMAKE_SYSTEM_VERSION} LESS 13))
+      ## Later than OSX 10.9 when they switched to libc++ as standard library
+      set( OSX_LIB_FLAG "-stdlib=libc++")
+    else()
+      set( OSX_LIB_FLAG "-stdlib=libstdc++")
+    endif()
+    message(STATUS "${OSX_DEPLOYMENT_FLAG} ${OSX_LIB_FLAG}")
+  endif()
+
+  if( CMAKE_OSX_SYSROOT )
+    message(STATUS "Sysroot for OSX was set to ${CMAKE_OSX_SYSROOT}. Adding the following flags whenever possible/needed:\n\r")
+    set( OSX_SYSROOT_STRING "sysroot=${CMAKE_OSX_SYSROOT}")
+    set( OSX_SYSROOT_FLAG "--${OSX_SYSROOT_STRING}")
+    message(STATUS "${OSX_SYSROOT_FLAG}")
+  endif()
+
+# force cmake > 2.8.1 to avoid bugs with OSX_DEPLOYMENT_TARGET
+cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
+endif()
+
 ## include extract/patch/build macros
 include ("${CMAKE_SOURCE_DIR}/macros.cmake")
 include ("${CMAKE_SOURCE_DIR}/libraries.cmake/seqan.cmake")
@@ -401,30 +427,6 @@ include ("${CMAKE_SOURCE_DIR}/libraries.cmake/sqlite.cmake")
 
 ## build mac os x specific C/C++ flags
 set( OPENMS_CONTRIB_MACOSX_MIXED_MODE 0 CACHE INTERNAL "building multiple architectures on MacOSX" FORCE)
-if(APPLE)
-  if( CMAKE_OSX_DEPLOYMENT_TARGET )
-  message(STATUS "Deployment target for OSX was set to ${CMAKE_OSX_DEPLOYMENT_TARGET}. Adding the following flags whenever possible/needed:\n\r")
-    set( OSX_DEPLOYMENT_TARGET_STRING "macosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}")
-    set( OSX_DEPLOYMENT_FLAG "-m${OSX_DEPLOYMENT_TARGET_STRING}")
-    if( NOT (${CMAKE_SYSTEM_VERSION} LESS 13))
-      ## Later than OSX 10.9 when they switched to libc++ as standard library
-      set( OSX_LIB_FLAG "-stdlib=libc++")
-    else()
-      set( OSX_LIB_FLAG "-stdlib=libstdc++")
-    endif()
-    message(STATUS "${OSX_DEPLOYMENT_FLAG} ${OSX_LIB_FLAG}")
-  endif()
-  
-  if( CMAKE_OSX_SYSROOT )
-    message(STATUS "Sysroot for OSX was set to ${CMAKE_OSX_SYSROOT}. Adding the following flags whenever possible/needed:\n\r")
-    set( OSX_SYSROOT_STRING "sysroot=${CMAKE_OSX_SYSROOT}")
-    set( OSX_SYSROOT_FLAG "--${OSX_SYSROOT_STRING}")
-    message(STATUS "${OSX_SYSROOT_FLAG}")
-  endif()
-
-  # force cmake > 2.8.1 to avoid bugs with OSX_DEPLOYMENT_TARGET
-  cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
-endif()
 
 list(FIND VALID_BUILD_TYPES ${BUILD_TYPE} list_pos)
 if( ${list_pos} EQUAL -1 )
