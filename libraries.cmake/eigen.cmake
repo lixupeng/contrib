@@ -27,10 +27,7 @@ macro( OPENMS_CONTRIB_BUILD_EIGEN )
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${_EIGEN_NATIVE_BUILD_DIR})
 
   message(STATUS "Generating eigen build system .. ")
-  execute_process(COMMAND ${CMAKE_COMMAND}
-									-G "${CMAKE_GENERATOR}"
-									-D CMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
-									${EIGEN_DIR}
+  execute_process(COMMAND ${CMAKE_COMMAND} -G"${CMAKE_GENERATOR}" -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR} ${EIGEN_DIR}
                   WORKING_DIRECTORY ${_EIGEN_NATIVE_BUILD_DIR}
                   OUTPUT_VARIABLE _EIGEN_CMAKE_OUT
                   ERROR_VARIABLE _EIGEN_CMAKE_ERR
@@ -47,11 +44,11 @@ macro( OPENMS_CONTRIB_BUILD_EIGEN )
   endif()
 
   message(STATUS "Installing eigen headers .. ")
-  execute_process(COMMAND ${CMAKE_COMMAND} -DBUILD_TYPE=Release cmake_install.cmake
-									WORKING_DIRECTORY ${_EIGEN_NATIVE_BUILD_DIR}
-									OUTPUT_VARIABLE _EIGEN_BUILD_OUT
-									ERROR_VARIABLE _EIGEN_BUILD_ERR
-									RESULT_VARIABLE _EIGEN_BUILD_SUCCESS)
+  execute_process(COMMAND ${CMAKE_COMMAND} -DBUILD_TYPE=Release -P cmake_install.cmake
+                  WORKING_DIRECTORY ${_EIGEN_NATIVE_BUILD_DIR}
+                  OUTPUT_VARIABLE _EIGEN_BUILD_OUT
+                  ERROR_VARIABLE _EIGEN_BUILD_ERR
+                  RESULT_VARIABLE _EIGEN_BUILD_SUCCESS)
 
 	# output to logfile
 	file(APPEND ${LOGFILE} ${_EIGEN_BUILD_OUT})
