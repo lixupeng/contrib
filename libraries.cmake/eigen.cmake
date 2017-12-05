@@ -29,14 +29,13 @@ macro( OPENMS_CONTRIB_BUILD_EIGEN )
   message(STATUS "Generating eigen build system .. ")
   execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" -D EIGEN_TEST_NOQT=ON -D CMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR} ${EIGEN_DIR}
                   WORKING_DIRECTORY ${_EIGEN_NATIVE_BUILD_DIR}
-                  #OUTPUT_VARIABLE _EIGEN_CMAKE_OUT
-                  #ERROR_VARIABLE _EIGEN_CMAKE_ERR
-		  TIMEOUT 600
+                  OUTPUT_VARIABLE _EIGEN_CMAKE_OUT
+                  ERROR_VARIABLE _EIGEN_CMAKE_ERR
                   RESULT_VARIABLE _EIGEN_CMAKE_SUCCESS)
 
   # output to logfile
-  #file(APPEND ${LOGFILE} ${_EIGEN_CMAKE_OUT})
-  #file(APPEND ${LOGFILE} ${_EIGEN_CMAKE_ERR})
+  file(APPEND ${LOGFILE} ${_EIGEN_CMAKE_OUT})
+  file(APPEND ${LOGFILE} ${_EIGEN_CMAKE_ERR})
 
   if (NOT _EIGEN_CMAKE_SUCCESS EQUAL 0)
     message(FATAL_ERROR "Generating eigen build system .. failed")
