@@ -58,6 +58,8 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
                          "--with-date_time" 
                          "--with-iostreams" 
                          "--with-regex"
+                         "--with-system"
+                         "--with-thread"
                          "--build-type=complete"
                          "-sZLIB_SOURCE=${ZLIB_DIR}"
                          "-sBZIP2_SOURCE=${BZIP2_DIR}" 
@@ -130,8 +132,8 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     
 
     # bootstrap boost
-    message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_bootstrap_toolchain} --with-libraries=date_time,iostreams,math,regex) ...")
-    execute_process(COMMAND ./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_bootstrap_toolchain} --with-libraries=iostreams,math,date_time,regex
+    message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_bootstrap_toolchain} --with-libraries=date_time,iostreams,math,regex,system,thread) ...")
+    execute_process(COMMAND ./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-toolset=${_boost_bootstrap_toolchain} --with-libraries=iostreams,math,date_time,regex,system,thread
                     WORKING_DIRECTORY ${BOOST_DIR}
                     OUTPUT_VARIABLE BOOST_BOOTSTRAP_OUT
                     ERROR_VARIABLE BOOST_BOOTSTRAP_OUT
@@ -140,10 +142,10 @@ MACRO( OPENMS_CONTRIB_BUILD_BOOST)
     # logfile
     file(APPEND ${LOGFILE} ${BOOST_BOOTSTRAP_OUT})
     if (NOT BOOST_BOOTSTRAP_SUCCESS EQUAL 0)
-      message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex) ... failed")
+      message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex,system,thread) ... failed")
       message(FATAL_ERROR ${BOOST_BOOTSTRAPPING_OUT})
     else()
-      message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex) ... done")
+      message(STATUS "Bootstrapping Boost libraries (./bootstrap.sh --prefix=${PROJECT_BINARY_DIR} --with-libraries=iostreams,math,date_time,regex,system,thread) ... done")
     endif()
 
     # boost cmd
